@@ -53,7 +53,9 @@ export default {
       return this.drawRightToLeft(r);
     },
     drawRightToLeft(r) {
+      var offsetx=25;
       var from = this.getRight(r.from);
+      from.x+=offsetx;
       var to = this.getLeft(r.to);
       var m1 = { x: (to.x - from.x) / 2 + from.x, y: from.y };
       var m2 = { x: (to.x - from.x) / 2 + from.x, y: to.y };
@@ -61,8 +63,10 @@ export default {
       return { line: `M ${from.x-5} ${from.y} L ${m1.x} ${m1.y} L ${m2.x} ${m2.y} L ${to.x} ${to.y}`, arrow: arrow };
     },
     drawLeftToRight(r) {
+      var offsetx=25;
       var from = this.getLeft(r.from);
       var to = this.getRight(r.to);
+      to.x+=offsetx;
       var m1 = { x: (to.x - from.x) / 2 + from.x, y: from.y };
       var m2 = { x: (to.x - from.x) / 2 + from.x, y: to.y };
       var arrow = `M${to.x},${to.y} L${to.x+10},${to.y+5} L${to.x+6.23},${to.y} L${to.x+10},${to.y-5} L${to.x},${to.y}`

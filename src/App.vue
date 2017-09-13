@@ -114,4 +114,17 @@ export default {
 @import './assets/css/style-responsive.css';
 @import './assets/css/style.css';
 
+.bn-icon{
+  font-family: 'bn-icon';
+  font-size: 15px;
+  color: #888;
+}
+@font-face {
+  font-family: 'bn-icon';  /* project id 414949 */
+  src: url('//at.alicdn.com/t/font_414949_ynvfl7zdmvb49529.eot');
+  src: url('//at.alicdn.com/t/font_414949_ynvfl7zdmvb49529.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_414949_ynvfl7zdmvb49529.woff') format('woff'),
+  url('//at.alicdn.com/t/font_414949_ynvfl7zdmvb49529.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_414949_ynvfl7zdmvb49529.svg#iconfont') format('svg');
+}
 </style>
