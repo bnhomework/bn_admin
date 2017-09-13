@@ -16,9 +16,9 @@ export default {
 
   methods: {
     init() {
-      this.items.push({ title: '1', top: 10, left: 20 })
-      this.items.push({ title: '2', top: 10, left: 30 })
-      this.items.push({ title: '3', top: 10, left: 40 })
+      this.items.push({ id:'1',title: '1', top: 10, left: 20 ,next:['2','3']})
+      this.items.push({ id:'2',title: '2', top: 10, left: 30 })
+      this.items.push({ id:'3',title: '3', top: 10, left: 40 })
     }
 
   },
