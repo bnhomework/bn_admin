@@ -1,7 +1,7 @@
 <template>
   <div class="bn-draggble-item" :class="{active:this.activeItem==this.item.id}" @mousedown="onClick" :style="itemStyle">
-    <div class="item-header" draggable="true" @dragstart="dragstart">{{item.title}}</div>
-    <div style="width: 100px;height: 100px;background-color: #5e5e5e"></div>
+    <div class="item-header"  draggable="true" @dragstart="dragstart">{{item.title}}</div>
+    <div style="width: 100px;height: 100px;background-color: #5e5e5e" draggable="true" @drop="endLink"></div>
     <div class="item-tool">
       <div class="bn-icon">&#xe6a1;</div>
       <div draggable="true" class="bn-icon" @mousedown="startLink">&#xe75c;</div>
@@ -15,6 +15,7 @@ export default {
     return {
       locked: false,
       moving: false,
+      // linking:false,
       orignalPosition: {}
     }
   },
@@ -32,15 +33,19 @@ export default {
         (parseInt(this.item.left, 10) - event.clientX) + ',' + (parseInt(this.item.top, 10) - event.clientY));
     },
     startLink(){
+      // this.linking=true;
       this.$emit('item-start-link');
     },
+    endLink(){
+      this.$emit('item-drop',this.item.id);
+    },
     drop(e) {
+      // e.preventDefault();
       if (this.moving) {
         this.moving = false;
         this.item.top = e.y;
         this.item.left = e.x;
       }
-      this.$emit('item-drop',this.item.id);
     },
     onClick() {
       this.$emit('item-click');
@@ -75,6 +80,9 @@ export default {
   height: 100%;
   padding: 3px;
   /*background-color: #7f3e5a*/
+}
+.item-tool>div{
+  cursor: pointer;
 }
 
 </style>

@@ -1,16 +1,12 @@
 <template>
   <div @mouseup="mouseup">
-    <div class="bn-tools" >
+    <div class="bn-tools">
       <div v-for="t in tools" @mousedown="pickTool(t)" draggable="true">{{t}}</div>
     </div>
     <div class="bn-draggable-container" @dragover.prevent="dragover" @drop="drop">
       <slot></slot>
       <relationship :relationships="relationships"></relationship>
-      <draggble-item v-for="item in items" :item="item" :eventHub="eventHub" :activeItem="activeItem"
-       @item-click="()=>{activeItem=item.id}"
-        @item-start-link="()=>{startlinkItem=item.id}"
-        @item-drop="itemDrop"
-       ></draggble-item>
+      <draggble-item v-for="item in items" :item="item" :eventHub="eventHub" :activeItem="activeItem" @item-click="()=>{activeItem=item.id}" @item-start-link="()=>{startlinkItem=item.id}" @item-drop="itemDrop"></draggble-item>
     </div>
   </div>
 </template>
@@ -26,8 +22,8 @@ export default {
       eventHub: new Vue(),
       activeItem: '',
       tools: [],
-      addingNewItem:undefined,
-      startlinkItem:undefined,
+      addingNewItem: undefined,
+      startlinkItem: undefined,
     }
   },
   props: ['itemList'],
@@ -37,10 +33,10 @@ export default {
   },
   methods: {
     drop(event) {
-      if(this.addingNewItem){
+      if (this.addingNewItem) {
         console.log(this.addingNewItem);
-        this.items.push({ id:this.addingNewItem,title: this.addingNewItem, top: 10, left: 30 })
-        this.addingNewItem=undefined;
+        this.items.push({ id: this.addingNewItem, title: this.addingNewItem, top: 10, left: 30 })
+        this.addingNewItem = undefined;
         return
       }
       var offset = event.dataTransfer.getData("text/plain").split(',');
@@ -49,34 +45,36 @@ export default {
       var newlocation = { x: X, y: Y };
       this.eventHub.$emit('drop', newlocation)
     },
-    itemDrop(target){
-      if(this.startlinkItem){
-        var source=this.items.filter((f) => { return f.id == this.startlinkItem&& target!=f.id });
-        if(source.length>0){
-            if(!source.nexts){
-              source.nexts=[target];
-            }else{
-              if(_.indexOf(source.nexts,target)<0){
-              source.nexts.push[target];                
-              }
+    itemDrop(target) {
+      var vm = this;
+      if (this.startlinkItem) {
+        var sourceList = this.items.filter((f) => { return f.id == this.startlinkItem && target != f.id });
+        if (sourceList.length > 0) {
+          var source = sourceList[0];
+          if (!source.next) {
+            vm.$set(source, 'next', [target]);
+          } else {
+            if (_.indexOf(source.next, target) < 0) {
+              source.next.push(target);
             }
+          }
         }
+        this.startlinkItem = undefined;
       }
-      this.startlinkItem=undefined;
     },
     dragover(e) {
       return false;
     },
-    mouseup(e){
-      if(this.addingNewItem){
-        this.addingNewItem=undefined;
+    mouseup(e) {
+      if (this.addingNewItem) {
+        this.addingNewItem = undefined;
       }
-      if(this.startlinkItem){
-        this.startlinkItem=undefined;
+      if (this.startlinkItem) {
+        this.startlinkItem = undefined;
       }
     },
-    pickTool(t){
-      this.addingNewItem=t;
+    pickTool(t) {
+      this.addingNewItem = t;
     }
   },
   computed: {
@@ -111,12 +109,14 @@ export default {
   margin-left: 200px;
   background-color: #ffffff
 }
+
 .bn-tools {
   height: 100%;
   width: 200px;
   float: left;
 }
-.bn-tools>div{
+
+.bn-tools>div {
   margin: 5px;
   min-height: 50px;
   background-color: #d6d6d6
