@@ -1,5 +1,5 @@
 <template>
-  <draggble-container title="test" :item-list="items">
+  <draggble-container  :item-list="items">
   </draggble-container>
 </template>
 <script>
@@ -16,9 +16,9 @@ export default {
 
   methods: {
     init() {
-      this.items.push({ id:'1',title: '1', top: 10, left: 20 ,next:['2','3']})
-      this.items.push({ id:'2',title: '2', top: 10, left: 30 })
-      this.items.push({ id:'3',title: '3', top: 10, left: 40 })
+      this.items.push({ id:'1',title: '1', w:100,h:50,top: 10, left: 20 ,next:['2','3']})
+      this.items.push({ id:'2',title: '2', w:100,h:50, top: 10, left: 30 })
+      this.items.push({ id:'3',title: '3', w:100,h:50, top: 10, left: 40 })
     }
 
   },

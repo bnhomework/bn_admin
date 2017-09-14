@@ -1,12 +1,18 @@
 <template>
   <div @mouseup="mouseup">
-    <div class="bn-tools">
-      <div v-for="t in tools" @mousedown="pickTool(t)" draggable="true">{{t}}</div>
+    <div class="bn-tools bn-panel">
+      <div class="header">工具箱</div>
+      <div style="max-height:700px;overflow-y:auto">
+      <div class="tool bn-panel" v-for="t in tools" @mousedown="pickTool(t)" draggable="true" @dragstart="addToolstart">{{t}}</div>
+        
+      </div>
     </div>
-    <div class="bn-draggable-container" @dragover.prevent="dragover" @drop="drop">
+    <div class="bn-draggable-container bn-panel" @dragover.prevent="dragover" @drop="drop">
       <slot></slot>
       <relationship :relationships="relationships"></relationship>
-      <draggble-item v-for="item in items" :item="item" :eventHub="eventHub" :activeItem="activeItem" @item-click="()=>{activeItem=item.id}" @item-start-link="()=>{startlinkItem=item.id}" @item-drop="itemDrop"></draggble-item>
+      <draggble-item v-for="item in items" :item="item" :eventHub="eventHub" :activeItem="activeItem" 
+      @item-click="()=>{activeItem=item.id}" @item-start-link="()=>{startlinkItem=item.id}" @item-drop="itemDrop"
+      @item-delete="itemDelete"></draggble-item>
     </div>
   </div>
 </template>
@@ -29,20 +35,23 @@ export default {
   props: ['itemList'],
   created() {
     this.items = this.itemList;
-    this.tools = ['a', 'b', 'c']
+    this.tools = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'M', 'n', 'o','p']
   },
   methods: {
     drop(event) {
+      var d=event.dataTransfer.getData("text/plain")||',';
+      var offset = d.split(',');
+      var X = event.clientX + (parseInt(offset[0], 10));
+      var Y = event.clientY + (parseInt(offset[1], 10));
+      var newlocation = { x: X, y: Y };
       if (this.addingNewItem) {
-        console.log(this.addingNewItem);
-        this.items.push({ id: this.addingNewItem, title: this.addingNewItem, top: 10, left: 30 })
+        var c=document.getElementsByClassName('bn-draggable-container')[0];
+        var viewportOffset =c.getBoundingClientRect();
+
+        this.items.push({ id: this.addingNewItem, title: this.addingNewItem, top: newlocation.y-viewportOffset.top-window.scrollY, left: newlocation.x-viewportOffset.left })
         this.addingNewItem = undefined;
         return
       }
-      var offset = event.dataTransfer.getData("text/plain").split(',');
-      var X = event.clientX + parseInt(offset[0], 10);
-      var Y = event.clientY + parseInt(offset[1], 10);
-      var newlocation = { x: X, y: Y };
       this.eventHub.$emit('drop', newlocation)
     },
     itemDrop(target) {
@@ -62,6 +71,12 @@ export default {
         this.startlinkItem = undefined;
       }
     },
+    itemDelete(i){
+      var idx=_.findIndex(this.items,(x)=>{return x.id==i});
+      if(idx>=0){
+        this.items.splice(idx,1);
+      }
+    },
     dragover(e) {
       return false;
     },
@@ -72,6 +87,12 @@ export default {
       if (this.startlinkItem) {
         this.startlinkItem = undefined;
       }
+    },
+    addToolstart(event) {
+      console.log(event);
+      event.dataTransfer.setData("text/plain",
+        // (0 - event.clientX) + ',' + (0 - event.clientY));
+        (event.pageX - event.clientX) + ',' + (event.pageY - event.clientY));
     },
     pickTool(t) {
       this.addingNewItem = t;
@@ -106,7 +127,7 @@ export default {
   position: relative;
   min-width: 800px;
   min-height: 800px;
-  margin-left: 200px;
+  margin-left: 220px;
   background-color: #ffffff
 }
 
@@ -114,12 +135,22 @@ export default {
   height: 100%;
   width: 200px;
   float: left;
-}
+  max-height: 800px;
 
-.bn-tools>div {
-  margin: 5px;
+}
+.bn-tools .header{
+  background-color: #d6d6d6;
+  line-height: 40px;
+  text-align: center;
+}
+.bn-tools .tool {
   min-height: 50px;
-  background-color: #d6d6d6
+  margin: 5px;
+}
+.bn-panel {
+    border-radius: 2px;
+    border: 0;
+    box-shadow: 0 1px 6px 0 rgba(0,0,0,0.12),0 1px 6px 0 rgba(0,0,0,0.12);
 }
 
 </style>

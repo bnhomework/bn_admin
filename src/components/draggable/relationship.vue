@@ -14,7 +14,8 @@ export default {
       moving: false,
       orignalPosition: {},
       dw: 100,
-      dh: 100,
+      dh: 50,
+      offsetx:25
     }
   },
   props: ['relationships'],
@@ -41,9 +42,10 @@ export default {
       var fy2=this.getBottom(r.from).y;
       var ty1=this.getTop(r.to).y;
       var ty2=this.getBottom(r.to).y;
-      if(fx2<tx1){
+      var minoffset=35
+      if(fx2+minoffset<tx1){
         return this.drawRightToLeft(r);
-      }else if(fx1>tx2){
+      }else if(fx1>tx2+minoffset){
         return this.drawLeftToRight(r);
       }else if(fy1>ty2){
         return this.drawTopToBottom(r);
@@ -53,7 +55,7 @@ export default {
       return this.drawRightToLeft(r);
     },
     drawRightToLeft(r) {
-      var offsetx=25;
+      var offsetx=this.offsetx;
       var from = this.getRight(r.from);
       from.x+=offsetx;
       var to = this.getLeft(r.to);
@@ -63,7 +65,7 @@ export default {
       return { line: `M ${from.x-5} ${from.y} L ${m1.x} ${m1.y} L ${m2.x} ${m2.y} L ${to.x} ${to.y}`, arrow: arrow };
     },
     drawLeftToRight(r) {
-      var offsetx=25;
+      var offsetx=this.offsetx;
       var from = this.getLeft(r.from);
       var to = this.getRight(r.to);
       to.x+=offsetx;
