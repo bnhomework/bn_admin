@@ -1,8 +1,13 @@
 <template>
   <svg style="width: 100%;height: 100%;min-height: 800px;min-width: 800px">
     <template v-for="r in relationships">
-      <path :d="getpath(r)" transform="translate(3.5,3)" pointer-events="visibleStroke" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#f76258" style="" stroke-width="2"></path>
-      <path pointer-events="all" version="1.1" xmlns="http://www.w3.org/2000/svg" :d="getEndPoint(r)" class="" stroke="#f76258" fill="#f76258" transform="translate(3.5,3)"></path>
+      <path :d="getpath(r)" transform="translate(3.5,3)" pointer-events="visibleStroke" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="none" :stroke="lineColor" style="" stroke-width="1"></path>
+      <path pointer-events="all" version="1.1" xmlns="http://www.w3.org/2000/svg" :d="getEndPoint(r)" class="" :stroke="lineColor" :fill="lineColor" transform="translate(3.5,3)"></path>
+      <g fill="none" class="bn-line-action">        
+      <path pointer-events="all" version="1.1" xmlns="http://www.w3.org/2000/svg" :d="getActionPath(r)" class="" :stroke="lineColor" :fill="lineColor" transform="translate(3.5,3)" @click="removeRelationship(r)">   
+      </path>  
+      <rect x="200" y="10" width="10" height="10" class="bn-line-action-item" />   
+      </g>
     </template>
   </svg>
 </template>
@@ -15,7 +20,8 @@ export default {
       orignalPosition: {},
       dw: 100,
       dh: 50,
-      offsetx:25
+      offsetx:25,
+      offsetx2:5
     }
   },
   props: ['relationships'],
@@ -31,6 +37,14 @@ export default {
     },
     getEndPoint(r) {
       return this.calcLine(r).arrow;
+    },
+    getActionPath(r){
+      var m2= this.calcLine(r).m2
+      return `M ${m2.x} ${m2.y} A 5 5 0 1 0 ${m2.x} ${m2.y-1}`
+    },
+    removeRelationship(r){
+      var idx=r.from.next.indexOf(r.to.id);
+      r.from.next.splice(idx,1);
     },
     calcLine(r){
       var fx1=this.getLeft(r.from).x;
@@ -59,10 +73,12 @@ export default {
       var from = this.getRight(r.from);
       from.x+=offsetx;
       var to = this.getLeft(r.to);
+      to.x-=this.offsetx2;
       var m1 = { x: (to.x - from.x) / 2 + from.x, y: from.y };
       var m2 = { x: (to.x - from.x) / 2 + from.x, y: to.y };
       var arrow = `M${to.x},${to.y} L${to.x-10},${to.y+5} L${to.x-6.23},${to.y} L${to.x-10},${to.y-5} L${to.x},${to.y}`
-      return { line: `M ${from.x-5} ${from.y} L ${m1.x} ${m1.y} L ${m2.x} ${m2.y} L ${to.x} ${to.y}`, arrow: arrow };
+      return { line: `M ${from.x-5} ${from.y} L ${m1.x} ${m1.y} L ${m2.x} ${m2.y} L ${to.x} ${to.y}`, arrow: arrow
+      ,m2:m2 };
     },
     drawLeftToRight(r) {
       var offsetx=this.offsetx;
@@ -72,7 +88,7 @@ export default {
       var m1 = { x: (to.x - from.x) / 2 + from.x, y: from.y };
       var m2 = { x: (to.x - from.x) / 2 + from.x, y: to.y };
       var arrow = `M${to.x},${to.y} L${to.x+10},${to.y+5} L${to.x+6.23},${to.y} L${to.x+10},${to.y-5} L${to.x},${to.y}`
-      return { line: `M ${from.x-5} ${from.y} L ${m1.x} ${m1.y} L ${m2.x} ${m2.y} L ${to.x} ${to.y}`, arrow: arrow };
+      return { line: `M ${from.x-5} ${from.y} L ${m1.x} ${m1.y} L ${m2.x} ${m2.y} L ${to.x} ${to.y}`, arrow: arrow ,m2:m2};
     },
     drawTopToBottom(r){
       var from = this.getTop(r.from);
@@ -82,15 +98,16 @@ export default {
       var m2 = { x: to.x, y: (to.y - from.y)*1.0 / 2.0 + from.y };
       var offsety=15;
       var arrow = `M${to.x},${to.y+offsety} L${to.x+5},${to.y+10+offsety} L${to.x},${to.y+6.23+offsety} L${to.x-5},${to.y+10+offsety} L${to.x},${to.y+offsety}`
-      return { line: `M ${from.x} ${from.y} L ${m1.x} ${m1.y} L ${m2.x} ${m2.y} L ${to.x} ${to.y}`, arrow: arrow };
+      return { line: `M ${from.x} ${from.y} L ${m1.x} ${m1.y} L ${m2.x} ${m2.y} L ${to.x} ${to.y}`, arrow: arrow ,m2:m2};
     },
     drawBottomToTop(r){
       var from = this.getBottom(r.from);
       var to = this.getTop(r.to);
+      to.y-=this.offsetx2;
       var m1 = { x: from.x, y: (to.y - from.y)*1.0 / 2.0 + from.y };
       var m2 = { x: to.x, y: (to.y - from.y)*1.0 / 2.0 + from.y };
       var arrow = `M${to.x},${to.y} L${to.x-5},${to.y-10} L${to.x},${to.y-6.23} L${to.x+5},${to.y-10} L${to.x},${to.y}`
-      return { line: `M ${from.x} ${from.y} L ${m1.x} ${m1.y} L ${m2.x} ${m2.y} L ${to.x} ${to.y}`, arrow: arrow };
+      return { line: `M ${from.x} ${from.y} L ${m1.x} ${m1.y} L ${m2.x} ${m2.y} L ${to.x} ${to.y}`, arrow: arrow ,m2:m2};
     },
     getSize(item) {
       var w = item.w || this.dw;
@@ -116,6 +133,9 @@ export default {
     itemStyle() {
       var bc = this.item.backgroundColor || '#ffffff';
       return `position: absolute;top:${this.item.top}px;left:${this.item.left}px;background-color: ${bc}`
+    },
+    lineColor(){
+      return '#919191'
     }
   }
 }
@@ -128,5 +148,10 @@ export default {
   z-index: 1000;
   color: red
 }
-
+.bn-line-action-item{
+  display: none
+}
+.bn-line-action:hover .bn-line-action-item{
+  display: block;
+}
 </style>

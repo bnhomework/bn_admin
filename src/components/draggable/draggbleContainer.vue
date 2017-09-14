@@ -52,6 +52,9 @@ export default {
         this.addingNewItem = undefined;
         return
       }
+      var mod=10;
+      newlocation.x=newlocation.x-newlocation.x%mod;
+      newlocation.y=newlocation.y-newlocation.y%mod;
       this.eventHub.$emit('drop', newlocation)
     },
     itemDrop(target) {

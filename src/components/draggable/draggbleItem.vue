@@ -2,7 +2,7 @@
   <div class="bn-draggble-item bn-panel" :class="{active:this.activeItem==this.item.id}" @mousedown="onClick" :style="itemStyle">
     <div class="item-header"  draggable="true" @dragstart="dragstart">{{item.title}}</div>
     <div :style="contentStyle" draggable="true" @drop="endLink"></div>
-    <div class="item-tool">
+    <div class="item-tool bn-panel">
       <div class="bn-icon">&#xe6a1;</div>
       <div draggable="true" class="bn-icon" @mousedown="startLink">&#xe75c;</div>
       <div class="bn-icon" @click="deleteItem">&#xe60c;</div>
@@ -57,19 +57,23 @@ export default {
   },
   computed: {
     itemStyle() {
-      var bc = this.item.backgroundColor || '#222';
+      var bc = this.item.backgroundColor || '#e5e5e5';
       return `position: absolute;top:${this.item.top}px;left:${this.item.left}px;background-color: ${bc}`
     },
     contentStyle(){
       var w=this.item.w||this.dw;
       var h=this.item.h||this.dh;
-      return `width: ${w}px;height: ${h}px;background-color: #5e5e5e`;
+      return `width: ${w}px;height: ${h}px;background-color: #f1f1f1`;
     }
   }
 }
 
 </script>
 <style>
+.item-header{
+  text-align: center;
+  font-weight: bold;
+}
 .item-header:hover {
   cursor: move
 }
