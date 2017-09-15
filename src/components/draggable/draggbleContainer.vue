@@ -2,17 +2,14 @@
   <div @mouseup="mouseup">
     <div class="bn-tools bn-panel">
       <div class="header">工具箱</div>
-      <div style="max-height:700px;overflow-y:auto">
-      <div class="tool bn-panel" v-for="t in tools" @mousedown="pickTool(t)" draggable="true" @dragstart="addToolstart">{{t}}</div>
-        
+      <div class="bn-tools-warp" >
+        <div class="tool bn-panel" v-for="t in tools" @mousedown="pickTool(t)" draggable="true" @dragstart="addToolstart">{{t}}</div>
       </div>
     </div>
     <div class="bn-draggable-container bn-panel" @dragover.prevent="dragover" @drop="drop">
       <slot></slot>
       <relationship :relationships="relationships"></relationship>
-      <draggble-item v-for="item in items" :item="item" :eventHub="eventHub" :activeItem="activeItem" 
-      @item-click="()=>{activeItem=item.id}" @item-start-link="()=>{startlinkItem=item.id}" @item-drop="itemDrop"
-      @item-delete="itemDelete"></draggble-item>
+      <draggble-item v-for="item in items" :item="item" :eventHub="eventHub" :activeItem="activeItem" @item-click="()=>{activeItem=item.id}" @item-start-link="()=>{startlinkItem=item.id}" @item-drop="itemDrop" @item-delete="itemDelete"></draggble-item>
     </div>
   </div>
 </template>
@@ -35,26 +32,26 @@ export default {
   props: ['itemList'],
   created() {
     this.items = this.itemList;
-    this.tools = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'M', 'n', 'o','p']
+    this.tools = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'M', 'n', 'o', 'p']
   },
   methods: {
     drop(event) {
-      var d=event.dataTransfer.getData("text/plain")||',';
+      var d = event.dataTransfer.getData("text/plain") || ',';
       var offset = d.split(',');
       var X = event.clientX + (parseInt(offset[0], 10));
       var Y = event.clientY + (parseInt(offset[1], 10));
       var newlocation = { x: X, y: Y };
       if (this.addingNewItem) {
-        var c=document.getElementsByClassName('bn-draggable-container')[0];
-        var viewportOffset =c.getBoundingClientRect();
+        var c = document.getElementsByClassName('bn-draggable-container')[0];
+        var viewportOffset = c.getBoundingClientRect();
 
-        this.items.push({ id: this.addingNewItem, title: this.addingNewItem, top: newlocation.y-viewportOffset.top-window.scrollY, left: newlocation.x-viewportOffset.left })
+        this.items.push({ id: this.addingNewItem, title: this.addingNewItem, top: newlocation.y - viewportOffset.top - window.scrollY, left: newlocation.x - viewportOffset.left })
         this.addingNewItem = undefined;
         return
       }
-      var mod=10;
-      newlocation.x=newlocation.x-newlocation.x%mod;
-      newlocation.y=newlocation.y-newlocation.y%mod;
+      var mod = 10;
+      newlocation.x = newlocation.x - newlocation.x % mod;
+      newlocation.y = newlocation.y - newlocation.y % mod;
       this.eventHub.$emit('drop', newlocation)
     },
     itemDrop(target) {
@@ -74,10 +71,10 @@ export default {
         this.startlinkItem = undefined;
       }
     },
-    itemDelete(i){
-      var idx=_.findIndex(this.items,(x)=>{return x.id==i});
-      if(idx>=0){
-        this.items.splice(idx,1);
+    itemDelete(i) {
+      var idx = _.findIndex(this.items, (x) => { return x.id == i });
+      if (idx >= 0) {
+        this.items.splice(idx, 1);
       }
     },
     dragover(e) {
@@ -139,21 +136,29 @@ export default {
   width: 200px;
   float: left;
   max-height: 800px;
-
 }
-.bn-tools .header{
+
+.bn-tools .header {
   background-color: #d6d6d6;
   line-height: 40px;
   text-align: center;
 }
+
 .bn-tools .tool {
   min-height: 50px;
   margin: 5px;
 }
+.bn-tools-warp{
+  max-height:700px;
+  overflow-y:hidden;
+}
+.bn-tools-warp:hover{  
+  overflow-y:auto
+}
 .bn-panel {
-    border-radius: 2px;
-    border: 0;
-    box-shadow: 0 1px 6px 0 rgba(0,0,0,0.12),0 1px 6px 0 rgba(0,0,0,0.12);
+  border-radius: 2px;
+  border: 0;
+  box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.12), 0 1px 6px 0 rgba(0, 0, 0, 0.12);
 }
 
 </style>
