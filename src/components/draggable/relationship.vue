@@ -1,8 +1,10 @@
 <template>
   <svg style="width: 100%;height: 100%;min-height: 800px;min-width: 800px">
     <template v-for="r in relationships">
+      <path :d="getpath(r)" transform="translate(3.5,3)" pointer-events="visibleStroke" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="none" :stroke="lineColor" style="" stroke-width="1"></path>
+      <path pointer-events="all" version="1.1" xmlns="http://www.w3.org/2000/svg" :d="getEndPoint(r)" class="" :stroke="lineColor" :fill="lineColor" transform="translate(3.5,3)"></path>
       <g fill="none" class="bn-line-action">
-        <rect :x="getActionPoint(r).x" :y="getActionPoint(r).y" width="50" height="50" fill="#ffffff"  transform="translate(0,-25)" />
+        <rect :x="getActionPoint(r).x" :y="getActionPoint(r).y" width="50" class="bn-line-action-item" height="50" fill-opacity="0.1" fill="#ffffff"  transform="translate(0,-25)" />
         <path pointer-events="all" version="1.1" xmlns="http://www.w3.org/2000/svg" :d="getActionPath(r)" class="" :stroke="lineColor" :fill="lineColor" transform="translate(3.5,3)" @click="removeRelationship(r)">
         </path>
         <text :x="getActionPoint(r).x" :y="getActionPoint(r).y" class="bn-icon bn-line-action-item" font-size="35" :fill="lineColor" transform="translate(15,-5)" >
@@ -12,8 +14,6 @@
           &#xe60c;
         </text>
       </g>
-      <path :d="getpath(r)" transform="translate(3.5,3)" pointer-events="visibleStroke" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="none" :stroke="lineColor" style="" stroke-width="1"></path>
-      <path pointer-events="all" version="1.1" xmlns="http://www.w3.org/2000/svg" :d="getEndPoint(r)" class="" :stroke="lineColor" :fill="lineColor" transform="translate(3.5,3)"></path>
     </template>
   </svg>
 </template>
