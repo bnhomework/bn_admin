@@ -60,7 +60,18 @@ function Matrix(m) {
   self.rotx = function(theta) {
     var ct = Math.cos(theta);
     var st = Math.sin(theta);
-    var rm = [1, 0, 0, 0, 0, ct, -st, 0, 0, st, ct, 0, 0, 0, 0, 1];
+    var rm = [1, 0, 0, 0, 0, 
+    ct, -st, 0, 0, st,
+     ct, 0, 0, 0, 0, 1];
+    return self.matrix(rm);
+  }
+  self.rotx2 = function(theta) {
+    var ct = Math.cos(theta);
+    var st = Math.sin(theta);
+    var rm = [1, 0, 0, 0, 
+    0,ct, st, 0, 
+    0, -st,ct, 0,
+     0, 0, 0, 1];
     return self.matrix(rm);
   }
 
@@ -71,12 +82,42 @@ function Matrix(m) {
     var rm = [ct, 0, st, 0, 0, 1, 0, 0, -st, 0, ct, 0, 0, 0, 0, 1];
     return self.matrix(rm);
   }
-
+self.roty2 = function(theta) {
+    var ct = Math.cos(theta);
+    var st = Math.sin(theta);
+    var rm = [ct, 0, st, 0, 
+    0, 1, 0, 0,
+     -st, 0, ct, 0,
+      0, 0, 0, 1];
+    return self.matrix(rm);
+  }
   // # Apply a rotation about the Z axis. `Theta` is measured in Radians
   self.rotz = function(theta) {
     var ct = Math.cos(theta);
     var st = Math.sin(theta);
     var rm = [ct, -st, 0, 0, st, ct, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
+    return self.matrix(rm);
+  }
+   self.rotz2 = function(theta) {
+    var ct = Math.cos(theta);
+    var st = Math.sin(theta);
+    var rm = [ct, st, 0, 0,
+     -st, ct, 0, 0, 
+     0, 0, 1, 0, 
+     0, 0, 0, 1];
+    return self.matrix(rm);
+  }
+   self.rot = function(alpha ,beta ,gamma ) {
+    var cta = Math.cos(alpha);
+    var sta = Math.sin(alpha);
+     var ctb = Math.cos(beta);
+    var stb = Math.sin(beta);
+     var ctg = Math.cos(gamma);
+    var stg = Math.sin(gamma);
+    var rm = [cta*ctb, stg*ctb, -stb, 0,
+     sta*stb*ctg-cta*stg, sta*stb*stg+cta*ctg, sta*ctb, 0, 
+     cta*stb*ctg+sta*stg, cta*stb*stg-sta*ctg, cta*ctb, 0, 
+     0, 0, 0, 1];
     return self.matrix(rm);
   }
   // # Apply a translation. All arguments default to `0`
@@ -100,7 +141,7 @@ function Matrix(m) {
 export default {
   data() {
     return {
-      setup: { w: 1200, h: 1200, theta: 45, helpLineDistince: 50, perspective: { left: -1, right : 1, bottom: -1, top: 1, near: 1, far: 100 } },
+      setup: { w: 1000, h: 1000, theta: 45, helpLineDistince: 50, perspective: { left: -1, right : 1, bottom: -1, top: 1, near: 1, far: 100 } },
       action: 'NA', //pan,retoe
       cursor: { x: 0.0, y: 0.0 },
       target: {
@@ -127,13 +168,18 @@ export default {
   methods: {
     init() {
       this.M = new Matrix().copy();
+      // this.M =new Matrix(this.M).rotz2(-45);
+      this.M =new Matrix(this.M).rot(45,45,-45);
+      // this.M =new Matrix(this.M).roty2(-45);
 
     },
     projection(p) {
       var d2_p = {};
       p = this.applyMatrix(p)
-      d2_p.x = this.center.x + p.x - p.z * Math.sin(this.setup.theta);
-      d2_p.y = this.center.y - p.y + p.z * Math.cos(this.setup.theta);
+      // d2_p.x = this.center.x + p.x - p.z * Math.sin(this.setup.theta);
+      // d2_p.y = this.center.y - p.y + p.z * Math.cos(this.setup.theta);
+       d2_p.x = this.center.x + p.x /(p.z +2000)*2000;
+      d2_p.y = this.center.y +p.y /( p.z +2000)*2000;
       return d2_p;
     },
     applyMatrix(p) {
@@ -168,14 +214,6 @@ export default {
       } else if (t == 3) {
         newP.z = 0;
       }
-      // var newP={x:0,y:0,z:0};
-      // if(t==1){
-      //  newP.x=p.x;
-      // }else if(t==2){
-      //  newP.y=p.y;
-      // }else if(t==3){
-      //  newP.z=p.z;
-      // }
       return this.drawLine({ f: p, t: newP });
     },
     //event start
@@ -211,16 +249,17 @@ export default {
       this.cursor.y = e.pageY;
       if (this.action == 'rotation') {
         var minDelta = 2;
-        var l = 0.015 * 0.1;
+        var l = 0.03 * 0.1;
+
         if (Math.abs(delta.x) < 2 && Math.abs(delta.y) < 2) {
           return
         }
         if (Math.abs(delta.x) > Math.abs(delta.y)) {
-          this.M = new Matrix(this.M).roty(delta.x * l);
+          this.M = new Matrix(this.M).roty2(delta.x * l);
           // this.M = new Matrix(this.M).rotz(-1*delta.x*l);
         } else {
-          this.M = new Matrix(this.M).rotx(delta.y * l);
-          this.M = new Matrix(this.M).rotz(-1 * delta.y * l);
+          this.M = new Matrix(this.M).rotx2(delta.y * l);
+          this.M = new Matrix(this.M).rotz2(-1 * delta.y * l);
         }
       } else if (this.action == 'pan') {
         this.target.position.x = this.targetOnDown.position.x + e.pageX - this.cursor.x;
@@ -297,19 +336,19 @@ export default {
         lines.push({ f: { x: -max, y: 0, z: l }, t: { x: max, y: 0, z: l } ,c:'c1'});
         lines.push({ f: { x: l, y: 0, z: -max }, t: { x: l, y: 0, z: max } ,c:'c1'});
       }
-      // for (var i = c; i >= 0; i--) {
-      //   var l = i * dist;
-      //   // //x
-      //   lines.push({ f: { x: 0, y: 0, z: l }, t: { x: max, y: 0, z: l } ,c:'c2'});
-      //   lines.push({ f: { x: 0, y: l, z: 0 }, t: { x: max, y: l, z: 0 } ,c:'c2'});
+      for (var i = c; i >= 0; i--) {
+        var l = i * dist;
+        // //x
+        lines.push({ f: { x: 0, y: 0, z: l }, t: { x: max, y: 0, z: l } ,c:'c2'});
+        lines.push({ f: { x: 0, y: l, z: 0 }, t: { x: max, y: l, z: 0 } ,c:'c2'});
 
-      //   //y
-      //   lines.push({ f: { x: l, y: 0, z: 0 }, t: { x: l, y: max, z: 0 } ,c:'c2'});
-      //   lines.push({ f: { x: 0, y: 0, z: l }, t: { x: 0, y: max, z: l } ,c:'c2'});
-      //   //z
-      //   lines.push({ f: { x: 0, y: l, z: 0 }, t: { x: 0, y: l, z: max } ,c:'c2'});
-      //   lines.push({ f: { x: l, y: 0, z: 0 }, t: { x: l, y: 0, z: max } ,c:'c2'});
-      // }
+        //y
+        lines.push({ f: { x: l, y: 0, z: 0 }, t: { x: l, y: max, z: 0 } ,c:'c2'});
+        lines.push({ f: { x: 0, y: 0, z: l }, t: { x: 0, y: max, z: l } ,c:'c2'});
+        //z
+        lines.push({ f: { x: 0, y: l, z: 0 }, t: { x: 0, y: l, z: max } ,c:'c2'});
+        lines.push({ f: { x: l, y: 0, z: 0 }, t: { x: l, y: 0, z: max } ,c:'c2'});
+      }
       return lines;
     },
     perspectiveM() {
