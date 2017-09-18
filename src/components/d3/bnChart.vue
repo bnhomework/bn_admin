@@ -65,15 +65,6 @@ function Matrix(m) {
      ct, 0, 0, 0, 0, 1];
     return self.matrix(rm);
   }
-  self.rotx2 = function(theta) {
-    var ct = Math.cos(theta);
-    var st = Math.sin(theta);
-    var rm = [1, 0, 0, 0, 
-    0,ct, st, 0, 
-    0, -st,ct, 0,
-     0, 0, 0, 1];
-    return self.matrix(rm);
-  }
 
   // # Apply a rotation about the Y axis. `Theta` is measured in Radians
   self.roty = function(theta) {
@@ -82,42 +73,11 @@ function Matrix(m) {
     var rm = [ct, 0, st, 0, 0, 1, 0, 0, -st, 0, ct, 0, 0, 0, 0, 1];
     return self.matrix(rm);
   }
-self.roty2 = function(theta) {
-    var ct = Math.cos(theta);
-    var st = Math.sin(theta);
-    var rm = [ct, 0, st, 0, 
-    0, 1, 0, 0,
-     -st, 0, ct, 0,
-      0, 0, 0, 1];
-    return self.matrix(rm);
-  }
   // # Apply a rotation about the Z axis. `Theta` is measured in Radians
   self.rotz = function(theta) {
     var ct = Math.cos(theta);
     var st = Math.sin(theta);
     var rm = [ct, -st, 0, 0, st, ct, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
-    return self.matrix(rm);
-  }
-   self.rotz2 = function(theta) {
-    var ct = Math.cos(theta);
-    var st = Math.sin(theta);
-    var rm = [ct, st, 0, 0,
-     -st, ct, 0, 0, 
-     0, 0, 1, 0, 
-     0, 0, 0, 1];
-    return self.matrix(rm);
-  }
-   self.rot = function(alpha ,beta ,gamma ) {
-    var cta = Math.cos(alpha);
-    var sta = Math.sin(alpha);
-     var ctb = Math.cos(beta);
-    var stb = Math.sin(beta);
-     var ctg = Math.cos(gamma);
-    var stg = Math.sin(gamma);
-    var rm = [cta*ctb, stg*ctb, -stb, 0,
-     sta*stb*ctg-cta*stg, sta*stb*stg+cta*ctg, sta*ctb, 0, 
-     cta*stb*ctg+sta*stg, cta*stb*stg-sta*ctg, cta*ctb, 0, 
-     0, 0, 0, 1];
     return self.matrix(rm);
   }
   // # Apply a translation. All arguments default to `0`
@@ -168,8 +128,8 @@ export default {
   methods: {
     init() {
       this.M = new Matrix().copy();
-      // this.M =new Matrix(this.M).rotz2(-45);
-      this.M =new Matrix(this.M).rot(45,45,-45);
+      // this.M =new Matrix(this.M).rotx2(-135);
+      // this.M =new Matrix(this.M).rot(30,30,0);
       // this.M =new Matrix(this.M).roty2(-45);
 
     },
@@ -178,8 +138,13 @@ export default {
       p = this.applyMatrix(p)
       // d2_p.x = this.center.x + p.x - p.z * Math.sin(this.setup.theta);
       // d2_p.y = this.center.y - p.y + p.z * Math.cos(this.setup.theta);
-       d2_p.x = this.center.x + p.x /(p.z +2000)*2000;
-      d2_p.y = this.center.y +p.y /( p.z +2000)*2000;
+
+
+      d2_p.x = this.center.x + p.x - p.z * Math.sin(this.setup.theta)-p.x* Math.cos(this.setup.theta);
+      d2_p.y = this.center.y - p.y + p.z * Math.cos(this.setup.theta)+p.x* Math.sin(this.setup.theta);
+
+      //  d2_p.x = this.center.x + p.x /(p.y +20000)*20000;
+      // d2_p.y = this.center.y +p.z /( p.y +20000)*20000;
       return d2_p;
     },
     applyMatrix(p) {
@@ -254,12 +219,19 @@ export default {
         if (Math.abs(delta.x) < 2 && Math.abs(delta.y) < 2) {
           return
         }
+        // if (Math.abs(delta.x) > Math.abs(delta.y)) {
+        //   this.M = new Matrix(this.M).rotz2(delta.x * l);
+        //   // this.M = new Matrix(this.M).rotz(-1*delta.x*l);
+        // } else {
+        //   this.M = new Matrix(this.M).roty2(delta.y * l);
+        //   this.M = new Matrix(this.M).rotx2(-1 * delta.y * l);
+        // }
         if (Math.abs(delta.x) > Math.abs(delta.y)) {
-          this.M = new Matrix(this.M).roty2(delta.x * l);
+          this.M = new Matrix(this.M).roty(delta.x * l);
           // this.M = new Matrix(this.M).rotz(-1*delta.x*l);
         } else {
-          this.M = new Matrix(this.M).rotx2(delta.y * l);
-          this.M = new Matrix(this.M).rotz2(-1 * delta.y * l);
+          this.M = new Matrix(this.M).rotx(delta.y * l);
+          this.M = new Matrix(this.M).rotz(-1 * delta.y * l);
         }
       } else if (this.action == 'pan') {
         this.target.position.x = this.targetOnDown.position.x + e.pageX - this.cursor.x;
@@ -329,13 +301,13 @@ export default {
       var dist = this.setup.helpLineDistince;
       var c = parseInt(max / dist, 10) || 0;
 
-      for (var i = c; i >= 0-c; i--) {
-        var l = i * dist;
+      // for (var i = c; i >= 0-c; i--) {
+      //   var l = i * dist;
 
 
-        lines.push({ f: { x: -max, y: 0, z: l }, t: { x: max, y: 0, z: l } ,c:'c1'});
-        lines.push({ f: { x: l, y: 0, z: -max }, t: { x: l, y: 0, z: max } ,c:'c1'});
-      }
+      //   lines.push({ f: { x: -max, y: 0, z: l }, t: { x: max, y: 0, z: l } ,c:'c1'});
+      //   lines.push({ f: { x: l, y: 0, z: -max }, t: { x: l, y: 0, z: max } ,c:'c1'});
+      // }
       for (var i = c; i >= 0; i--) {
         var l = i * dist;
         // //x
