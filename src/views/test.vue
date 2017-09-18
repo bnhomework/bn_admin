@@ -26,6 +26,14 @@ export default {
       this.points.push({p:{x:310,y:320,z:330},label:'x:10,y:20,z:30'})
       this.points.push({p:{x:140,y:150,z:160},label:'x:60,y:50,z:60'})
       this.points.push({p:{x:200,y:20,z:200},label:'x:20,y:20,z:20'})
+
+      for(var i=0;i<50;i=i+6){
+        for(var j=0;j<50;j=j+7){
+          for(var k=0;k<10;k=k+4){
+             this.points.push({p:{x:i*3,y:j*5,z:k*20},label:'x:10,y:20,z:30'})
+          }
+        }
+      }
     }
 
   },
