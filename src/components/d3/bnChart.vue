@@ -1,8 +1,11 @@
 <template>
-  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" :viewbox="viewbox" :width="setup.w" :height="setup.h" \:transform="transform" @mousedown="mousedown" @mouseup="mouseup" @mousemove="mousemove" @mousewheel="mousewheel">
+  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" :viewbox="viewbox" :width="setup.w" :height="setup.h" \:transform="transform" @mousedown="mousedown" @mouseup="mouseup" @mousemove="mousemove" @mousewheel="mousewheel" @mouseout="mouseout">
     <path class="bn-axis" v-for="line in axisLines" :d="drawLine(line)" />
-    <path class="bn-axis-help" v-for="line in helpLines" :d="drawLine(line)" :class="line.c"/>
-    <path class="bn-axis" v-for="line in axisArrows" :d="line.path" />
+    <path class="bn-axis-help" v-for="line in helpLines" :d="drawLine(line)" :class="line.c" />
+    <g v-for="line in axisArrows">
+      <path class="bn-axis" :d="line.path" />
+      <text :x="line.label.p.x" :y="line.label.p.y" font-size="20">{{line.label.text}}</text>
+    </g>
     <template v-for="point in points">
       <g class="bn-point-warp">
         <path pointer-events="all" version="1.1" xmlns="http://www.w3.org/2000/svg" :d="drawPoint(point.p)" class="bn-point">
@@ -60,9 +63,10 @@ function Matrix(m) {
   self.rotx = function(theta) {
     var ct = Math.cos(theta);
     var st = Math.sin(theta);
-    var rm = [1, 0, 0, 0, 0, 
-    ct, -st, 0, 0, st,
-     ct, 0, 0, 0, 0, 1];
+    var rm = [1, 0, 0, 0, 0,
+      ct, -st, 0, 0, st,
+      ct, 0, 0, 0, 0, 1
+    ];
     return self.matrix(rm);
   }
 
@@ -101,7 +105,7 @@ function Matrix(m) {
 export default {
   data() {
     return {
-      setup: { w: 1000, h: 1000, theta: 45, helpLineDistince: 50, perspective: { left: -1, right : 1, bottom: -1, top: 1, near: 1, far: 100 } },
+      setup: { w: 1000, h: 1000, theta: 45, helpLineDistince: 50, perspective: { left: -1, right: 1, bottom: -1, top: 1, near: 1, far: 100 } },
       action: 'NA', //pan,retoe
       cursor: { x: 0.0, y: 0.0 },
       target: {
@@ -140,8 +144,8 @@ export default {
       // d2_p.y = this.center.y - p.y + p.z * Math.cos(this.setup.theta);
 
 
-      d2_p.x = this.center.x + p.x - p.z * Math.sin(this.setup.theta)-p.x* Math.cos(this.setup.theta);
-      d2_p.y = this.center.y - p.y + p.z * Math.cos(this.setup.theta)+p.x* Math.sin(this.setup.theta);
+      d2_p.x = this.center.x + p.x - p.z * Math.sin(this.setup.theta) //-p.x* Math.cos(this.setup.theta);
+      d2_p.y = this.center.y - p.y + p.z * Math.cos(this.setup.theta) //+p.x* Math.sin(this.setup.theta);
 
       //  d2_p.x = this.center.x + p.x /(p.y +20000)*20000;
       // d2_p.y = this.center.y +p.z /( p.y +20000)*20000;
@@ -219,16 +223,9 @@ export default {
         if (Math.abs(delta.x) < 2 && Math.abs(delta.y) < 2) {
           return
         }
-        // if (Math.abs(delta.x) > Math.abs(delta.y)) {
-        //   this.M = new Matrix(this.M).rotz2(delta.x * l);
-        //   // this.M = new Matrix(this.M).rotz(-1*delta.x*l);
-        // } else {
-        //   this.M = new Matrix(this.M).roty2(delta.y * l);
-        //   this.M = new Matrix(this.M).rotx2(-1 * delta.y * l);
-        // }
+        // this.M= new Matrix(this.M).matrix(this.xyToTransform(delta.x,delta.y));
         if (Math.abs(delta.x) > Math.abs(delta.y)) {
           this.M = new Matrix(this.M).roty(delta.x * l);
-          // this.M = new Matrix(this.M).rotz(-1*delta.x*l);
         } else {
           this.M = new Matrix(this.M).rotx(delta.y * l);
           this.M = new Matrix(this.M).rotz(-1 * delta.y * l);
@@ -244,6 +241,9 @@ export default {
     },
     mouseup(e) {
       this.action = 'NA'
+    },
+    mouseout(e) {
+      // this.action = 'NA'
     }
   },
   computed: {
@@ -274,25 +274,30 @@ export default {
       var alist = [];
       var o1 = 5;
       var o2 = 3;
+
+      var o3 = 20;
       var x1 = this.projection({ x: this.maxAxis, y: 0, z: 0 });
       var x2 = this.projection({ x: this.maxAxis, y: o2, z: 0 });
       var x3 = this.projection({ x: this.maxAxis + o1, y: 0, z: 0 });
+      var x31 = this.projection({ x: this.maxAxis + o3, y: 0, z: 0 });
       var x4 = this.projection({ x: this.maxAxis, y: 0 - o2, z: 0 });
-      alist.push({ label: 'X', path: `M${x1.x} ${x1.y} L${x2.x} ${x2.y} L${x3.x} ${x3.y} L${x4.x} ${x4.y} Z` });
+      alist.push({ label: { p: x31, text: 'x' }, path: `M${x1.x} ${x1.y} L${x2.x} ${x2.y} L${x3.x} ${x3.y} L${x4.x} ${x4.y} Z` });
 
 
       var y1 = this.projection({ y: this.maxAxis, z: 0, x: 0 });
       var y2 = this.projection({ y: this.maxAxis, z: o2, x: 0 });
       var y3 = this.projection({ y: this.maxAxis + o1, z: 0, x: 0 });
+      var y31 = this.projection({ y: this.maxAxis + o3, z: 0, x: 0 });
       var y4 = this.projection({ y: this.maxAxis, z: 0 - o2, x: 0 });
-      alist.push({ label: 'X', path: `M${y1.x} ${y1.y} L${y2.x} ${y2.y} L${y3.x} ${y3.y} L${y4.x} ${y4.y} Z` });
+      alist.push({ label: { p: y31, text: 'y' }, path: `M${y1.x} ${y1.y} L${y2.x} ${y2.y} L${y3.x} ${y3.y} L${y4.x} ${y4.y} Z` });
 
 
       var z1 = this.projection({ z: this.maxAxis, x: 0, y: 0 });
       var z2 = this.projection({ z: this.maxAxis, x: o2, y: 0 });
       var z3 = this.projection({ z: this.maxAxis + o1, x: 0, y: 0 });
+      var z31 = this.projection({ z: this.maxAxis + o3, x: 0, y: 0 });
       var z4 = this.projection({ z: this.maxAxis, x: 0 - o2, y: 0 });
-      alist.push({ label: 'X', path: `M${z1.x} ${z1.y} L${z2.x} ${z2.y} L${z3.x} ${z3.y} L${z4.x} ${z4.y} Z` });
+      alist.push({ label: { p: z31, text: 'z' }, path: `M${z1.x} ${z1.y} L${z2.x} ${z2.y} L${z3.x} ${z3.y} L${z4.x} ${z4.y} Z` });
       return alist;
     },
     helpLines() {
@@ -303,23 +308,21 @@ export default {
 
       // for (var i = c; i >= 0-c; i--) {
       //   var l = i * dist;
-
-
       //   lines.push({ f: { x: -max, y: 0, z: l }, t: { x: max, y: 0, z: l } ,c:'c1'});
       //   lines.push({ f: { x: l, y: 0, z: -max }, t: { x: l, y: 0, z: max } ,c:'c1'});
       // }
       for (var i = c; i >= 0; i--) {
         var l = i * dist;
         // //x
-        lines.push({ f: { x: 0, y: 0, z: l }, t: { x: max, y: 0, z: l } ,c:'c2'});
-        lines.push({ f: { x: 0, y: l, z: 0 }, t: { x: max, y: l, z: 0 } ,c:'c2'});
+        lines.push({ f: { x: 0, y: 0, z: l }, t: { x: max, y: 0, z: l }, c: 'c2' });
+        lines.push({ f: { x: 0, y: l, z: 0 }, t: { x: max, y: l, z: 0 }, c: 'c2' });
 
         //y
-        lines.push({ f: { x: l, y: 0, z: 0 }, t: { x: l, y: max, z: 0 } ,c:'c2'});
-        lines.push({ f: { x: 0, y: 0, z: l }, t: { x: 0, y: max, z: l } ,c:'c2'});
+        lines.push({ f: { x: l, y: 0, z: 0 }, t: { x: l, y: max, z: 0 }, c: 'c2' });
+        lines.push({ f: { x: 0, y: 0, z: l }, t: { x: 0, y: max, z: l }, c: 'c2' });
         //z
-        lines.push({ f: { x: 0, y: l, z: 0 }, t: { x: 0, y: l, z: max } ,c:'c2'});
-        lines.push({ f: { x: l, y: 0, z: 0 }, t: { x: l, y: 0, z: max } ,c:'c2'});
+        lines.push({ f: { x: 0, y: l, z: 0 }, t: { x: 0, y: l, z: max }, c: 'c2' });
+        lines.push({ f: { x: l, y: 0, z: 0 }, t: { x: l, y: 0, z: max }, c: 'c2' });
       }
       return lines;
     },
@@ -360,6 +363,11 @@ export default {
 
 .bn-point-warp:hover .bn-projection-line {
   display: block;
+}
+
+svg text::selection {
+  background: none; 
+  pointer-events:none;
 }
 
 </style>
