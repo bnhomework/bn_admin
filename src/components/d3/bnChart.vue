@@ -63,9 +63,10 @@ function Matrix(m) {
   self.rotx = function(theta) {
     var ct = Math.cos(theta);
     var st = Math.sin(theta);
-    var rm = [1, 0, 0, 0, 0,
-      ct, -st, 0, 0, st,
-      ct, 0, 0, 0, 0, 1
+    var rm = [1, 0, 0, 0,
+     0,  ct, -st, 0, 
+     0, st, ct, 0,
+      0, 0, 0, 1
     ];
     return self.matrix(rm);
   }
