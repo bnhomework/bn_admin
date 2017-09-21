@@ -1,5 +1,5 @@
 <template>
-  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" :viewbox="viewbox" :width="setup.w" :height="setup.h" \:transform="transform" @mousedown="mousedown" @mouseup="mouseup" @mousemove="mousemove" @mousewheel="mousewheel" @mouseout="mouseout">
+  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" :viewbox="viewbox" :width="setup.w" :height="setup.h"  @mousedown="mousedown" @mouseup="mouseup" @mousemove="mousemove" @mousewheel="mousewheel" @mouseout="mouseout">
     <path class="bn-axis" v-for="line in axisLines" :d="drawLine(line)" />
     <path class="bn-axis-help" v-for="line in helpLines" :d="drawLine(line)" :class="line.c" />
     <g v-for="line in axisArrows">
@@ -22,91 +22,12 @@
   </svg>
 </template>
 <script>
-function Matrix(m) {
-  var self = this;
-  self.IDENTITY = [1.0, 0.0, 0.0, 0.0,
-    0.0, 1.0, 0.0, 0.0,
-    0.0, 0.0, 1.0, 0.0,
-    0.0, 0.0, 0.0, 1.0
-  ];
-  self.TRANSPOSE_INDICES = [0, 4, 8, 12,
-    1, 5, 9, 13,
-    2, 6, 10, 14,
-    3, 7, 11, 15
-  ];
-  if (m) {
-    self._m = m;
-  } else {
-    self._m = self.IDENTITY.slice();
-  }
-  self.copy = function() {
-    return self._m.slice();
-  }
-  self.matrix = function(m) {
-    var c = self.IDENTITY.slice();
 
-    for (var j = 0; j < 4; j++) {
-      for (var i = 0; i < 16; i = i + 4) {
-
-        c[i + j] =
-          m[i] * self._m[j] +
-          m[i + 1] * self._m[4 + j] +
-          m[i + 2] * self._m[8 + j] +
-          m[i + 3] * self._m[12 + j]
-      }
-    }
-    console.log(c)
-    return c;
-  }
-
-  //   # Apply a rotation about the X axis. `Theta` is measured in Radians
-  self.rotx = function(theta) {
-    var ct = Math.cos(theta);
-    var st = Math.sin(theta);
-    var rm = [1, 0, 0, 0,
-     0,  ct, -st, 0, 
-     0, st, ct, 0,
-      0, 0, 0, 1
-    ];
-    return self.matrix(rm);
-  }
-
-  // # Apply a rotation about the Y axis. `Theta` is measured in Radians
-  self.roty = function(theta) {
-    var ct = Math.cos(theta);
-    var st = Math.sin(theta);
-    var rm = [ct, 0, st, 0, 0, 1, 0, 0, -st, 0, ct, 0, 0, 0, 0, 1];
-    return self.matrix(rm);
-  }
-  // # Apply a rotation about the Z axis. `Theta` is measured in Radians
-  self.rotz = function(theta) {
-    var ct = Math.cos(theta);
-    var st = Math.sin(theta);
-    var rm = [ct, -st, 0, 0, st, ct, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
-    return self.matrix(rm);
-  }
-  // # Apply a translation. All arguments default to `0`
-  self.translate = function(x = 0, y = 0, z = 0) {
-
-    var rm = [1, 0, 0, x, 0, 1, 0, y, 0, 0, 1, z, 0, 0, 0, 1]
-    return self.matrix(rm);
-  }
-
-  // # Apply a scale. If not all arguments are supplied, each dimension (x,y,z)
-  // # is copied from the previous arugment. Therefore, `_scale()` is equivalent
-  // # to `_scale(1,1,1)`, and `_scale(1,-1)` is equivalent to `_scale(1,-1,-1)`
-  self.scale = function(sx, sy, sz) {
-    sx = sx || 1;
-    sy = sy || sx;
-    sz = sz || sy;
-    rm = [sx, 0, 0, 0, 0, sy, 0, 0, 0, 0, sz, 0, 0, 0, 0, 1]
-    return self.matrix(rm);
-  }
-}
+import Matrix from './bnD3.js'
 export default {
   data() {
     return {
-      setup: { w: 1000, h: 1000, theta: 45, helpLineDistince: 50, perspective: { left: -1, right: 1, bottom: -1, top: 1, near: 1, far: 100 } },
+      setup: { w: 1000, h: 1000, theta: 45, helpLineDistince: 50 },
       action: 'NA', //pan,retoe
       cursor: { x: 0.0, y: 0.0 },
       target: {
@@ -119,34 +40,28 @@ export default {
         rotation: { x: 0, y: 0 },
         zoom: 0
       },
-      M: undefined
+      M: undefined,
+      delta:{x:0,y:0}
     };
   },
   created() {
     // document.add
+    document.addEventListener('mouseup',this.mouseup)
     this.init();
   },
   beforeDestroy() {
-
+    document.removeEventListener('mouseup',this.mouseup)
   },
   props: ['points'],
   methods: {
     init() {
       this.M = new Matrix().copy();
-      // this.M =new Matrix(this.M).rotx2(-135);
-      // this.M =new Matrix(this.M).rot(30,30,0);
-      // this.M =new Matrix(this.M).roty2(-45);
-
     },
     projection(p) {
       var d2_p = {};
       p = this.applyMatrix(p)
-      // d2_p.x = this.center.x + p.x - p.z * Math.sin(this.setup.theta);
-      // d2_p.y = this.center.y - p.y + p.z * Math.cos(this.setup.theta);
-
-
-      d2_p.x = this.center.x + p.x - p.z * Math.sin(this.setup.theta) //-p.x* Math.cos(this.setup.theta);
-      d2_p.y = this.center.y - p.y + p.z * Math.cos(this.setup.theta) //+p.x* Math.sin(this.setup.theta);
+      d2_p.x = this.center.x + p.x - p.z * Math.sin(this.setup.theta);
+      d2_p.y = this.center.y - p.y + p.z * Math.cos(this.setup.theta);
 
       //  d2_p.x = this.center.x + p.x /(p.y +20000)*20000;
       // d2_p.y = this.center.y +p.z /( p.y +20000)*20000;
@@ -155,10 +70,10 @@ export default {
     applyMatrix(p) {
       p.w = p.w || 1;
       var r = {};
-      r.x = p.x * this.M[0] + p.y * this.M[1] + p.z * this.M[2] + p.w * this.M[3]
-      r.y = p.x * this.M[4] + p.y * this.M[5] + p.z * this.M[6] + p.w * this.M[7]
-      r.z = p.x * this.M[8] + p.y * this.M[9] + p.z * this.M[10] + p.w * this.M[11]
-      r.w = p.x * this.M[12] + p.y * this.M[13] + p.z * this.M[14] + p.w * this.M[15]
+      r.x = p.x * this.M.m[0] + p.y * this.M.m[1] + p.z * this.M.m[2] + p.w * this.M.m[3]
+      r.y = p.x * this.M.m[4] + p.y * this.M.m[5] + p.z * this.M.m[6] + p.w * this.M.m[7]
+      r.z = p.x * this.M.m[8] + p.y * this.M.m[9] + p.z * this.M.m[10] + p.w * this.M.m[11]
+      r.w = p.x * this.M.m[12] + p.y * this.M.m[13] + p.z * this.M.m[14] + p.w * this.M.m[15]
 
       return r;
 
@@ -218,19 +133,9 @@ export default {
       this.cursor.x = e.pageX;
       this.cursor.y = e.pageY;
       if (this.action == 'rotation') {
-        var minDelta = 2;
-        var l = 0.03 * 0.1;
-
-        if (Math.abs(delta.x) < 2 && Math.abs(delta.y) < 2) {
-          return
-        }
-        // this.M= new Matrix(this.M).matrix(this.xyToTransform(delta.x,delta.y));
-        if (Math.abs(delta.x) > Math.abs(delta.y)) {
-          this.M = new Matrix(this.M).roty(delta.x * l);
-        } else {
-          this.M = new Matrix(this.M).rotx(delta.y * l);
-          this.M = new Matrix(this.M).rotz(-1 * delta.y * l);
-        }
+        this.delta.x+=delta.x;
+        this.delta.y+=delta.y;
+        this.doRotation();
       } else if (this.action == 'pan') {
         this.target.position.x = this.targetOnDown.position.x + e.pageX - this.cursor.x;
         this.target.position.y = this.targetOnDown.position.y + e.pageY - this.cursor.y;
@@ -239,6 +144,12 @@ export default {
         if (this.target.zoom < 50)
           this.target.zoom = 50;
       }
+    },
+    doRotation(){
+      var l = 0.03 * 0.1;
+      this.M = new Matrix().roty(this.delta.x * l);
+      this.M = this.M.rotx(this.delta.y * l);
+      this.M = this.M.rotz(-1 * this.delta.y * l);
     },
     mouseup(e) {
       this.action = 'NA'
@@ -259,11 +170,11 @@ export default {
     center() {
       return { x: this.setup.w / 2, y: this.setup.h / 2 }
     },
-    transform() {
-      // return `rotate(${this.rotation.x},${this.rotation.y})`
+    // transform() {
+    //   // return `rotate(${this.rotation.x},${this.rotation.y})`
 
-      return `skewX(${this.rotation.x}) skewY(${this.rotation.y})`
-    },
+    //   return `skewX(${this.rotation.x}) skewY(${this.rotation.y})`
+    // },
     axisLines() {
       var lines = [];
       lines.push({ f: { x: 0, y: 0, z: 0 }, t: { x: this.maxAxis, y: 0, z: 0 } })
@@ -326,18 +237,6 @@ export default {
         lines.push({ f: { x: l, y: 0, z: 0 }, t: { x: l, y: 0, z: max }, c: 'c2' });
       }
       return lines;
-    },
-    perspectiveM() {
-      var s = this.setup.perspective;
-      var near2 = 2 * s.near
-      var dx = s.right - s.left
-      var dy = s.top - s.bottom
-      var dz = s.far - s.near
-      return [near2 / dx, 0.0, (s.right + s.left) / dx, 0.0,
-        0.0, near2 / dy, 0.0, (s.top + s.bottom) / dy,
-        0.0, 0.0, -(s.far + s.near) / dz, -(s.far * near2) / dz,
-        0.0, 0.0, -1.0, 0.0
-      ];
     }
   }
 }
@@ -367,8 +266,8 @@ export default {
 }
 
 svg text::selection {
-  background: none; 
-  pointer-events:none;
+  background: none;
+  pointer-events: none;
 }
 
 </style>
