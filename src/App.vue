@@ -51,7 +51,7 @@
         <div id="page-wrapper">
           <div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
             <div class="page-header pull-left">
-              <div class="page-title">{{name}} {{$t('hello')}}</div>
+              <div class="page-title">{{name}}</div>
             </div>
             <div class="clearfix"></div>
           </div>
@@ -99,7 +99,7 @@ export default {
   },
   computed: {
     name() {
-      return this.$route.name
+      return this.$route.meta.name||this.$route.name
     }
   },
   components: { sidemenu: sidemenu, languageSelect: languageSelect, quickSearch: quickSearch }
@@ -121,10 +121,10 @@ export default {
 }
 @font-face {
   font-family: 'bn-icon';  /* project id 414949 */
-  src: url('//at.alicdn.com/t/font_414949_ynvfl7zdmvb49529.eot');
-  src: url('//at.alicdn.com/t/font_414949_ynvfl7zdmvb49529.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_414949_ynvfl7zdmvb49529.woff') format('woff'),
-  url('//at.alicdn.com/t/font_414949_ynvfl7zdmvb49529.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_414949_ynvfl7zdmvb49529.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_414949_r395dq5r0zf1dcxr.eot');
+  src: url('//at.alicdn.com/t/font_414949_r395dq5r0zf1dcxr.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_414949_r395dq5r0zf1dcxr.woff') format('woff'),
+  url('//at.alicdn.com/t/font_414949_r395dq5r0zf1dcxr.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_414949_r395dq5r0zf1dcxr.svg#iconfont') format('svg');
 }
 </style>
