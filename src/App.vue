@@ -63,8 +63,8 @@
             </transition>
           </div>
         </div>
-        <div id="footer">
-          <div class="copyright">2017 © Genewiz - NGS Lab UI</div>
+        <div id="footer" style="z-index:10">
+          <div class="copyright">2017 © Genewiz - GA Lab UI</div>
         </div>
       </div>
     </div>
