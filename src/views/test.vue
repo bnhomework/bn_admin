@@ -49,18 +49,20 @@
         <h2>PROJECTS DETAILS</h2>
         <el-button type="primary" @click="()=>{showNewProject=true}">CREATE NEW PROJECT<span class='bn-icon' style="color:white">&#xe65a;</span></el-button>
         <span style="float: right" v-if="showNewProject">
-          <el-button type="success">SAVE</el-button>
+          <el-button type="primary">SAVE</el-button>
           <el-button @click="()=>{showNewProject=false}">CANCEL</el-button>
         </span>
         <div> &nbsp </div>
         <div v-if="showNewProject">
           <el-input placeholder="Enter Project Name" style="width:250px"></el-input>
+        <div> &nbsp </div>
           <el-row :gutter="20">
             <el-col :span="4">
               <div class="grid-label">Account</div>
             </el-col>
             <el-col :span="6">
-              <div class="grid-content">Jennifer</div>
+              <!-- <div class="grid-content">Jennifer</div> -->
+              <el-input :disabled="true" v-model="Jennifer">Jennifer</el-input>
             </el-col>
           </el-row>
           <el-row :gutter="20">
@@ -97,9 +99,9 @@
             </el-col>
           </el-row>
           <div style="width:100%;margin-bottom: 20px;min-height: 50px;border-bottom: 1px solid gray"></div>
-          <h2>SUBMIT SAMPLES</h2>
-          <el-button type="primary">UPLOAD SAMPLES</el-button>
-          <el-button background-color="gray">MODIFY SAMPLES</el-button>
+          <h2>SUBMIT REACTIONS</h2>
+          <el-button type="primary">UPLOAD REACTIONS</el-button>
+          <el-button background-color="gray">MODIFY REACTIONS</el-button>
           <div>
             <div> &nbsp </div>
             <a href="javascript:void" style="color:blue;text-decoration: underline">download template</a>
@@ -108,9 +110,41 @@
       </el-col>
     </el-row>
     <div style="width:100%;margin-bottom: 20px;min-height: 50px;border-bottom: 1px solid gray"></div>
+    <h2>REACTION DETAILS</h2>
+    <span style="float:right">
+      <el-button type="primary">Add</el-button>
+      <el-button type="danger">Delete</el-button>
+    </span>
+    <el-table :data="tableData" border style="width: 100%">
+      <el-table-column fixed prop="samplename" label="Sample Name" width="180">
+      </el-table-column>
+      <el-table-column prop="reactionlabel" label="Reaction Label" width="170">
+      </el-table-column>
+      <el-table-column prop="sampletype" label="Sample Type" width="170">
+      </el-table-column>
+      <el-table-column prop="primername" label="Primer Name" width="170">
+      </el-table-column>
+      <el-table-column prop="vector" label="Vector" width="170">
+      </el-table-column>
+      <el-table-column prop="returnrequirment" label="Return Requirment" width="220">
+      </el-table-column>
+      <el-table-column prop="isdiscard" label="Is Discard" width="120">
+      </el-table-column>
+      <el-table-column prop="comments" label="Comments" width="120">
+      </el-table-column>
+      <el-table-column prop="reactionstatus" label="Reaction Status" width="220">
+      </el-table-column>
+      <el-table-column fixed="right" label="操作" width="100">
+        <template scope="scope">
+          <!-- <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button> -->
+          <el-button type="text" size="small">编辑</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
   </div>
 </template>
 <script>
+import dummy from '@/utils/dummy.js'
 export default {
   data() {
     return {
@@ -120,41 +154,12 @@ export default {
       selectedFilterOption: 'All',
       filterValue: '',
       cdate: '2017-10-23',
-      showNewProject: false,
+      Jennifer:'Jennifer',
+      showNewProject: true,
 
       selectedProject: '',
-
-      projects: [{ name: '20171025RodZ_S69 mutants', samples: [], account: 'Jennifer', customer: 'Yingjie', opened: '20171026', finish: '', priority: 'Standard', trackingNumber: '36110205' },
-        { name: 'FALL2017/MICRO PURIFIED', samples: [], account: 'Jennifer', customer: 'THU', opened: '20171026', finish: '', priority: 'Standard', trackingNumber: '36109507' },
-        { name: 'FALL2017/MICRO PURIFIED', samples: [], account: 'Jennifer', customer: 'THU', opened: '20171026', finish: '', priority: 'Standard', trackingNumber: '36109355' },
-        { name: 'FALL2017/MICRO UNPURIFIED', samples: [], account: 'Jennifer', customer: 'THU', opened: '20171026', finish: '', priority: 'Standard', trackingNumber: '36107407' },
-        { name: 'FALL2017/MICRO-UNPURIFIED WITH BLANK', samples: [], account: 'Jennifer', customer: 'THU', opened: '20171026', finish: '', priority: 'Standard', trackingNumber: '36106555' },
-        { name: 'Phong Lu', samples: [], account: 'Jennifer', customer: 'Phong', opened: '20171026', finish: '', priority: 'Standard', trackingNumber: '36103533' },
-        { name: 'FALL2017/BIO221', samples: [], account: 'Jennifer', customer: 'THU', opened: '20171026', finish: '', priority: 'Standard', trackingNumber: '36102618' },
-        { name: 'CC', samples: [], account: 'Jennifer', customer: 'Thach', opened: '20171026', finish: '', priority: 'Standard', trackingNumber: '36100629' },
-        { name: 'DIL BD #10/25/17 TRT 2 RACKS', samples: [], account: 'Jennifer', customer: 'SD', opened: '20171026', finish: '', priority: 'Standard', trackingNumber: '36098268' },
-        { name: 'Cheryl Goldbeck Merck #30-31566249', samples: [], account: 'Jennifer', customer: 'SF', opened: '20171026', finish: '', priority: 'Standard', trackingNumber: '36097346' },
-        { name: 'BD_QC_102517_SEA', samples: [], account: 'Jennifer', customer: 'Seattle', opened: '20171026', finish: '', priority: 'Standard', trackingNumber: '36097124' },
-        { name: 'Cheryl Goldbeck Merck #30-31566249', samples: [], account: 'Jennifer', customer: 'SF', opened: '20171026', finish: '', priority: 'Standard', trackingNumber: '36096535' },
-        { name: 'Meirong', samples: [], account: 'Jennifer', customer: 'Dengke', opened: '20171026', finish: '', priority: 'Standard', trackingNumber: '36095468' },
-        { name: 'Myo_ITS3_LR3', samples: [], account: 'Jennifer', customer: 'YOU', opened: '20171026', finish: '', priority: 'Standard', trackingNumber: '36094809' },
-        { name: 'MT', samples: [], account: 'Jennifer', customer: 'David', opened: '20171026', finish: '', priority: 'Standard', trackingNumber: '36093368' },
-        { name: 'Big Dye Dilution Buffer QC 25Oct2017', samples: [], account: 'Jennifer', customer: 'RTP', opened: '20171026', finish: '', priority: 'Standard', trackingNumber: '36091968' },
-        { name: 'Big Dye QC 25Oct2017', samples: [], account: 'Jennifer', customer: 'RTP', opened: '20171026', finish: '', priority: 'Standard', trackingNumber: '36091746' },
-        { name: 'e-syt1', samples: [], account: 'Jennifer', customer: 'Andres', opened: '20171026', finish: '', priority: 'Standard', trackingNumber: '36091413' },
-        { name: 'ISO QC 25OCT2017', samples: [], account: 'Jennifer', customer: 'RTP', opened: '20171026', finish: '', priority: 'Standard', trackingNumber: '36091046' },
-        { name: 'yFZ 004-B C', samples: [], account: 'Jennifer', customer: 'Yunfeng', opened: '20171026', finish: '', priority: 'Standard', trackingNumber: '36090457' },
-        { name: 'yFZ 004-b yFZ004-c Sequencing', samples: [], account: 'Jennifer', customer: 'Yunfeng', opened: '20171026', finish: '', priority: 'Standard', trackingNumber: '36089204' },
-        { name: 'SUB-90158', samples: [], account: 'Jennifer', customer: 'Anne', opened: '20171026', finish: '', priority: 'Standard', trackingNumber: '36089059' },
-        { name: 'Jeff Mazur Cell Design Labs #30-35150356', samples: [], account: 'Jennifer', customer: 'SF', opened: '20171025', finish: '', priority: 'Standard', trackingNumber: '36088837' },
-        { name: 'trx_chi', samples: [], account: 'Jennifer', customer: 'Jan', opened: '20171025', finish: '', priority: 'Standard', trackingNumber: '36088248' },
-        { name: 'Intro to Bio Fall 2017', samples: [], account: 'Jennifer', customer: 'Dawn', opened: '20171025', finish: '', priority: 'Standard', trackingNumber: '36088026' },
-        { name: 'SUB-90157', samples: [], account: 'Jennifer', customer: 'Roger', opened: '20171025', finish: '', priority: 'Standard', trackingNumber: '36087659' },
-        { name: 'SUB-90157', samples: [], account: 'Jennifer', customer: 'Roger', opened: '20171025', finish: '', priority: 'Standard', trackingNumber: '36087215' },
-        { name: 'SUB-90157', samples: [], account: 'Jennifer', customer: 'Roger', opened: '20171025', finish: '', priority: 'Standard', trackingNumber: '36087437' },
-        { name: 'sng-1::BFP', samples: [], account: 'Jennifer', customer: 'Sarah', opened: '20171025', finish: '', priority: 'Standard', trackingNumber: '36087063' },
-        { name: 'pCS6-PSD95-Cerulean - CMV-Forward 1', samples: [], account: 'Jennifer', customer: 'Sylvia', opened: '20171025', finish: '', priority: 'Standard', trackingNumber: '36086404' }
-      ],
+      tableData: dummy.samples,
+      projects: dummy.projects,
       points: [],
       input3: '',
       input4: '',
@@ -227,6 +232,11 @@ export default {
   font-size: 15px;
   font-weight: bold;
   line-height: 40px
+}
+
+.el-table__fixed,
+.el-table__fixed-right {
+  overflow-y: hidden;
 }
 
 </style>
