@@ -2,14 +2,18 @@
   <div @mouseup="mouseup">
     <div class="bn-tools bn-panel">
       <div class="header">工具箱</div>
-      <div class="bn-tools-warp" >
+      <div class="bn-tools-warp">
         <div class="tool bn-panel" v-for="t in tools" @mousedown="pickTool(t)" draggable="true" @dragstart="addToolstart">{{t}}</div>
       </div>
     </div>
-    <div class="bn-draggable-container bn-panel" @dragover.prevent="dragover" @drop="drop">
-      <slot></slot>
-      <relationship :relationships="relationships"></relationship>
-      <draggble-item v-for="item in items" :item="item" :eventHub="eventHub" :activeItem="activeItem" @item-click="()=>{activeItem=item.id}" @item-start-link="()=>{startlinkItem=item.id}" @item-drop="itemDrop" @item-delete="itemDelete"></draggble-item>
+    <div  class="bn-right-panel  bn-panel" @mousedown="mousedownonwarp" @mousemove="mousemoveonwarp" @mouseup="mouseuponwarp">
+      <div id="bn-outter-view" style="position:relative;width:100%,height:100%;overflow:hidden" @dragover.prevent="dragover" @drop="drop">
+        <div class="bn-draggable-container" @dragover.prevent="dragover" @drop="drop" :style="{top:top +'px',left:left+'px'}">
+          <slot></slot>
+          <relationship :relationships="relationships"></relationship>
+          <draggble-item v-for="item in items" :item="item" :eventHub="eventHub" :activeItem="activeItem" @item-click="()=>{activeItem=item.id}" @item-start-link="()=>{startlinkItem=item.id}" @item-drop="itemDrop" @item-delete="itemDelete"></draggble-item>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -27,6 +31,10 @@ export default {
       tools: [],
       addingNewItem: undefined,
       startlinkItem: undefined,
+      top: 100,
+      left: 200,
+      moving:undefined,
+      isdragging:false
     }
   },
   props: ['itemList'],
@@ -80,6 +88,32 @@ export default {
     dragover(e) {
       return false;
     },
+    mousedownonwarp(e){
+      if(this.startlinkItem||this.isdragging){
+        return
+      }
+      if(e.target.id=='bn-outter-view'||e.target.id=='bn-inner-view'){
+
+      this.moving=e;
+      }
+    },
+    mousemoveonwarp(e){
+      if(this.moving){
+        console.log(this.moving)
+        console.log(e)
+        var x=e.clientX-this.moving.clientX;
+        var y=e.clientY-this.moving.clientY;
+        this.left+=x;
+        this.top+=y;
+        this.moving=e;
+      }
+    },
+    mouseuponwarp(e){
+      if(this.moving){
+        this.moving=undefined;
+
+      }
+    },
     mouseup(e) {
       if (this.addingNewItem) {
         this.addingNewItem = undefined;
@@ -127,8 +161,12 @@ export default {
   position: relative;
   min-width: 800px;
   min-height: 800px;
-  margin-left: 220px;
   background-color: #ffffff
+}
+
+.bn-right-panel {
+
+  margin-left: 220px;
 }
 
 .bn-tools {
@@ -148,13 +186,16 @@ export default {
   min-height: 50px;
   margin: 5px;
 }
-.bn-tools-warp{
-  max-height:700px;
-  overflow-y:hidden;
+
+.bn-tools-warp {
+  max-height: 700px;
+  overflow-y: hidden;
 }
-.bn-tools-warp:hover{  
-  overflow-y:auto
+
+.bn-tools-warp:hover {
+  overflow-y: auto
 }
+
 .bn-panel {
   border-radius: 2px;
   border: 0;

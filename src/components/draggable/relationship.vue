@@ -1,5 +1,5 @@
 <template>
-  <svg style="width: 100%;height: 100%;min-height: 800px;min-width: 800px">
+  <svg id="bn-inner-view"  style="width: 100%;height: 100%;min-height: 800px;min-width: 800px">
     <template v-for="r in relationships">
       <path :d="getpath(r)" transform="translate(3.5,3)" pointer-events="visibleStroke" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="none" :stroke="lineColor" style="" stroke-width="1"></path>
       <path pointer-events="all" version="1.1" xmlns="http://www.w3.org/2000/svg" :d="getEndPoint(r)" class="" :stroke="lineColor" :fill="lineColor" transform="translate(3.5,3)"></path>
