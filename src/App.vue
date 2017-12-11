@@ -1,79 +1,47 @@
 <template>
-  <div id="app" :class="{'sidebar-collapsed':sideBarCollapse}">
-    <div>
-      <div id="header-topbar-option-demo" class="page-header-topbar">
-        <nav id="topbar" role="navigation" style="margin-bottom: 0; z-index: 2;" class="navbar navbar-default navbar-static-top">
-          <div class="navbar-header">
-            <button type="button" data-toggle="collapse" data-target=".sidebar-collapse" class="navbar-toggle">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <router-link id="logo" class="navbar-brand" to="/">
-              <span class="fa fa-rocket"></span>
-              <span class="logo-text">NGS Lab</span>
-              <span style="display: none" class="logo-text-icon">N</span>
-            </router-link>
-          </div>
-          <div class="topbar-main">
-            <a id="menu-toggle" href="javascript:void(0)" class="hidden-xs" @click="toggleNavigation"> <i class="fa fa-bars"></i>
-            </a>
-            <quick-search></quick-search>
-            <ul class="nav navbar navbar-top-links navbar-right mbn">
-              <language-select></language-select>
-            </ul>
-          </div>
-        </nav>
-        <!--BEGIN MODAL CONFIG PORTLET-->
-        <div id="modal-config" class="modal fade">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" data-dismiss="modal" aria-hidden="true" class="close">×</button>
-                <h4 class="modal-title">Modal title</h4>
-              </div>
-              <div class="modal-body">
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eleifend et nisl eget porta. Curabitur elementum sem molestie nisl varius, eget tempus odio molestie. Nunc vehicula sem arcu, eu pulvinar neque cursus ac. Aliquam ultricies lobortis magna et aliquam. Vestibulum egestas eu urna sed ultricies. Nullam pulvinar dolor vitae quam dictum condimentum. Integer a sodales elit, eu pulvinar leo. Nunc nec aliquam nisi, a mollis neque. Ut vel felis quis tellus hendrerit placerat. Vivamus vel nisl non magna feugiat dignissim sed ut nibh. Nulla elementum, est a pretium hendrerit, arcu risus luctus augue, mattis aliquet orci ligula eget massa. Sed ut ultricies felis.
-                </p>
-              </div>
-              <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div id="wrapper">
+  <div id="app">
+      <el-header style="text-align: right; font-size: 12px;line-height: 44px;height:44px;background-color:#fff">
+        <languageSelect></languageSelect> 
+      <el-dropdown>
+        <i class="el-icon-setting" style="margin-right: 15px"></i>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item>查看</el-dropdown-item>
+          <el-dropdown-item>新增</el-dropdown-item>
+          <el-dropdown-item>删除</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+      <span>{{$store.state.LoginName}}</span>
+    </el-header>
+    <el-container style="height: 800px; border: 1px solid #eee">
+      <el-aside width="250px" style="background-color: rgb(238, 241, 246)">
         <sidemenu :menu="menu1"></sidemenu>
-        <div id="page-wrapper">
-          <div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
-            <div class="page-header pull-left">
-              <div class="page-title">{{name}}</div>
-            </div>
-            <div class="clearfix"></div>
-          </div>
-          <div class="page-content">
-            <!--  <button @click="test"> switch language</button>
-          <button @click="test2"> add resource</button> -->
-            <transition :name="transitionName">
-              <router-view></router-view>
-            </transition>
-          </div>
-        </div>
-        <div id="footer" style="z-index:10">
-          <div class="copyright">2017 © Genewiz - GA Lab UI</div>
-        </div>
-      </div>
-    </div>
+      </el-aside>
+      <el-container>
+        <!-- <el-header style="text-align: right; font-size:12px;" height="44px">
+          <el-breadcrumb separator-class="el-icon-arrow-right"style="padding: 10px">
+            <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+            <el-breadcrumb-item>活动管理</el-breadcrumb-item>
+            <el-breadcrumb-item>活动列表</el-breadcrumb-item>
+            <el-breadcrumb-item>活动详情</el-breadcrumb-item>
+          </el-breadcrumb>
+        </el-header> -->
+        <el-main style="">
+          <transition :name="transitionName">
+            <router-view></router-view>
+          </transition>
+        </el-main>
+      </el-container>
+    </el-container>
+    <el-footer>
+      <div class="copyright">2017 © Genewiz - GA Lab UI</div>
+    </el-footer>
   </div>
 </template>
 <script>
 import sidemenu from '@/components/sidemenu.vue'
 import languageSelect from '@/components/languageSelect.vue'
 import quickSearch from '@/components/quickSearch.vue'
+import 'element-ui/lib/theme-chalk/index.css'
 export default {
   name: 'app',
   data() {
@@ -83,15 +51,15 @@ export default {
       menu1: []
     }
   },
-  created(){
+  created() {
     this.init();
   },
   methods: {
-    init(){
+    init() {
       this.$api.common.BuildMenu()
-            .then((res)=>{
-                this.menu1=res.data;
-            })
+        .then((res) => {
+          this.menu1 = res.data;
+        })
     },
     toggleNavigation: function toggleNavigation() {
       this.sideBarCollapse = !this.sideBarCollapse
@@ -99,7 +67,7 @@ export default {
   },
   computed: {
     name() {
-      return this.$route.meta.name||this.$route.name
+      return this.$route.meta.name || this.$route.name
     }
   },
   components: { sidemenu: sidemenu, languageSelect: languageSelect, quickSearch: quickSearch }
@@ -107,24 +75,32 @@ export default {
 
 </script>
 <style>
-@import './assets/vendors/font-awesome/css/font-awesome.min.css';
-@import './assets/vendors/bootstrap/css/bootstrap.min.css';
-@import '../node_modules/element-ui/lib/theme-default/index.css';
-@import './assets/css/themes/style1/orange-blue.css';
-@import './assets/css/style-responsive.css';
-@import './assets/css/style.css';
 
-.bn-icon{
+body {
+  margin: 0px;
+  background-color: #edf2f5;
+}
+
+
+.copyright {
+  margin-right: 20px;
+  float: right;
+}
+
+.bn-icon {
   font-family: 'bn-icon';
   font-size: 15px;
   color: #888;
 }
+
 @font-face {
-  font-family: 'bn-icon';  /* project id 414949 */
+  font-family: 'bn-icon';
+  /* project id 414949 */
   src: url('//at.alicdn.com/t/font_414949_r395dq5r0zf1dcxr.eot');
   src: url('//at.alicdn.com/t/font_414949_r395dq5r0zf1dcxr.eot?#iefix') format('embedded-opentype'),
   url('//at.alicdn.com/t/font_414949_r395dq5r0zf1dcxr.woff') format('woff'),
   url('//at.alicdn.com/t/font_414949_r395dq5r0zf1dcxr.ttf') format('truetype'),
   url('//at.alicdn.com/t/font_414949_r395dq5r0zf1dcxr.svg#iconfont') format('svg');
 }
+
 </style>

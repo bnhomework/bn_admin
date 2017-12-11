@@ -16,62 +16,62 @@
                     >
             <el-table-column type="selection" width="55"></el-table-column>
             <el-table-column :label="$t('Sample#')" width="180" prop="dataName" :render-header="renderCopyDownHeader">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <div v-copyable="{dataList:dataInGrid,data:scope.row,property:'dataName'}" >
                         <pop-edit :v="scope.row.SampleName" @save="(v,ctx)=>ctx.$set(scope.row,'SampleName',v)"></pop-edit>
                     </div>
                 </template>
             </el-table-column>
             <el-table-column :label="$t('Sample Name')" width="180" property="SampleName" :render-header="renderCopyDownHeader">
-                <template scope="scope"  >
+                <template slot-scope="scope"  >
                     <div v-copyable="{dataList:dataInGrid,data:scope.row,property:'SampleName'}" >
                     <pop-edit :v="scope.row.SampleName" @save="(v,ctx)=>ctx.$set(scope.row,'SampleName',v)"></pop-edit>
                     </div>
                 </template>
             </el-table-column>
             <el-table-column :label="$t('Rec Date')" width="180">
-                <template scope="scope">
+                <template slot-scope="scope">
                 <pop-edit type="textarea" :v="scope.row.SampleName" @save="(v,ctx)=>ctx.$set(scope.row,'SampleName',v)"></pop-edit>
                 </template>
             </el-table-column>
             <el-table-column :label="$t('Receiver')" width="180">
-                <template scope="scope">
+                <template slot-scope="scope">
                 <pop-edit type="date-picker" :v="scope.row.ReceiveDate" @save="(v,ctx)=>ctx.$set(scope.row,'ReceiveDate',v)"></pop-edit>
                 </template>
             </el-table-column>
             <el-table-column :label="$t('Status')" width="180">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <pop-edit type="dropdown" :v="scope.row.Status" :dpOptions="enumStatus" @save="(v,ctx)=>ctx.$set(scope.row,'Status',v)"></pop-edit>
                 </template>
             </el-table-column>
             <el-table-column :label="$t('Shipping')" width="180">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <el-button type="text" v-on:click="goToException(scope.row.dataName)">{{ scope.row.Exception }}</el-button>
                 </template>
             </el-table-column>
             <el-table-column :label="$t('Status')" width="180">
-                <template scope="scope">{{ scope.row.Inqueue }}</template>
+                <template slot-scope="scope">{{ scope.row.Inqueue }}</template>
             </el-table-column>
             <el-table-column :label="$t('Status')" width="180">
-                <template scope="scope">{{ scope.row.Inqueue }}</template>
+                <template slot-scope="scope">{{ scope.row.Inqueue }}</template>
             </el-table-column>
             <el-table-column :label="$t('Status')" width="180">
-                <template scope="scope">{{ scope.row.Inqueue }}</template>
+                <template slot-scope="scope">{{ scope.row.Inqueue }}</template>
             </el-table-column>
             <el-table-column :label="$t('Status')" width="180">
-                <template scope="scope">{{ scope.row.Inqueue }}</template>
+                <template slot-scope="scope">{{ scope.row.Inqueue }}</template>
             </el-table-column>
             <el-table-column :label="$t('Status')" width="180">
-                <template scope="scope">{{ scope.row.Inqueue }}</template>
+                <template slot-scope="scope">{{ scope.row.Inqueue }}</template>
             </el-table-column>
             <el-table-column :label="$t('Status')" width="180">
-                <template scope="scope">{{ scope.row.Inqueue }}</template>
+                <template slot-scope="scope">{{ scope.row.Inqueue }}</template>
             </el-table-column>
             <el-table-column :label="$t('Status')" width="180">
-                <template scope="scope">{{ scope.row.Inqueue }}</template>
+                <template slot-scope="scope">{{ scope.row.Inqueue }}</template>
             </el-table-column>
             <el-table-column :label="$t('Status')" width="180">
-                <template scope="scope">{{ scope.row.Inqueue }}</template>
+                <template slot-scope="scope">{{ scope.row.Inqueue }}</template>
             </el-table-column>
         </el-table>
         <el-pagination @size-change="function(val){pagesize = val;}" @current-change="function(val){currentPage = val;}" :current-page="currentPage" :page-sizes="[10,50,100, 200]" :page-size="pagesize" layout="total, sizes,->, prev, pager, next, jumper" :total="tableData.length"></el-pagination>

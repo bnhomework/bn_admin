@@ -24,6 +24,7 @@ const store=new Vuex.Store({
     mutations: {
         authSuccess(state, preload) {
             var d = new Date();
+            logger.info( JSON.stringify(preload));
             Vue.set(state, 'isAuth', true);
             Vue.set(state, 'UserId', preload["UserId"]);
             if( preload["TokenId"]){

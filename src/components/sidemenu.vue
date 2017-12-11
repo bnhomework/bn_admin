@@ -1,117 +1,47 @@
 <template>
-  <nav id="sidebar" role="navigation" class="navbar-default navbar-static-side" style="min-height: 100%;">
-    <div class="sidebar-collapse menu-scroll" style="height: auto;">
-      <ul id="side-menu" class="nav">
-        <li class="user-panel">
-          <div class="thumb">
-            <img src="https://s3.amazonaws.com/uifaces/faces/twitter/kolage/128.jpg" alt="" class="img-circle"></div>
-          <div class="info">
-            <p>{{$store.state.LoginName}}</p>
-            <ul class="list-inline list-unstyled">
-              <li>
-                <a href="extra-profile.html" data-hover="tooltip" title="" data-original-title="Profile"> <i class="fa fa-user"></i>
-                </a>
-              </li>
-              <li>
-                <a href="email-inbox.html" data-hover="tooltip" title="" data-original-title="Mail"> <i class="fa fa-envelope"></i>
-                </a>
-              </li>
-              <li>
-                <a href="#" data-hover="tooltip" title="" data-toggle="modal" data-target="#modal-config" data-original-title="Setting">
-                  <i class="fa fa-cog"></i>
-                </a>
-              </li>
-              <li>
-                <a href="extra-signin.html" data-hover="tooltip" title="" data-original-title="Logout">
-                  <i class="fa fa-sign-out"></i>
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div class="clearfix"></div>
-        </li>
-        <template v-for="(m,i) in menu">
-          <template v-if="m.items">
-            <!-- <li  @click="groupClick(m)" :class='{active:m.open}'> -->
-            <li  @click="groupClick(m)"class="Expaned" :class='{active:m.open}'>
-              <a href="javascript:void(0);">
-                <i :v-if="m.icon" class="fa fa-laptop fa-fw" :class="m.icon"><div class="icon-bg bg-pink"></div></i> 
-                <span class="menu-title">{{m.title}}</span>
-                <span class="fa arrow"></span>
-              </a>
-              <transition name="fade">
-              <ul class="nav nav-second-level collapse" :class="{in:m.open}">
-                <template v-for="s in m.items">
-                  <li :class='{active:s.active}' @click.stop="menuClick(s)">
-                    <a href="javascript:void(0)">
-                      <i class="fa fa-rocket" v-if="s.icon" :class="s.icon"></i>
-                      <span class="submenu-title">{{s.title}}</span>
-                    </a>
-                  </li>
-                </template>
-              </ul>
-            </transition>
-            </li>
+  <el-menu default-active="Projects" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" :router="true">
+    <template v-for="(m,i) in menu">
+      <template v-if="m.items">
+        <el-submenu :index="m.title">
+          <template slot="title">
+            <!-- <i class="el-icon-location"></i> -->
+            <i :v-if="m.icon" class="fa fa-laptop fa-fw" :class="m.icon"><div class="icon-bg bg-pink"></div></i>
+            <span>{{m.title}}</span>
           </template>
-          <template v-else>
-            <li :class='{active:m.active}' @click="menuClick(m)">
-              <a href="javascript:void(0);">
-                <i v-if="m.icon" class="fa fa-tachometer fa-fw" :class="m.icon"><div class="icon-bg bg-orange"></div></i> 
-                <span class="menu-title">{{m.title}}</span>
-              </a>
-            </li>
+          <template v-for="s in m.items">
+            <el-menu-item :index="s.url">{{s.title}}</el-menu-item>
           </template>
-        </template>
-      </ul>
-    </div>
-  </nav>
+        </el-submenu>
+      </template>
+      <template v-else>
+        <el-menu-item :index="m.url">
+          <!-- <i class="el-icon-menu"></i> -->
+          <i v-if="m.icon" class="fa fa-tachometer fa-fw" :class="m.icon"><div class="icon-bg bg-orange"></div></i>
+          <span slot="title">{{m.title}}</span>
+        </el-menu-item>
+      </template>
+    </template>
+  </el-menu>
 </template>
 <script>
 export default {
   name: 'sidemenu',
-  data () {
-    return {selectedItem: undefined}
+  data() {
+    return { selectedItem: undefined }
   },
   props: ['menu'],
   methods: {
-    groupClick: function isExpaned (m) {
-      m.open = !m.open
+    handleClose() {
+
     },
-    menuClick: function isExpaned (m) {
-      if (this.selectedItem) {
-        this.selectedItem.active = false
-      }
-      this.selectedItem = m
-      m.active = true
-      this.$router.push({path: m.url})
+    handleOpen() {
+
     }
   }
 }
+
 </script>
 <style>
-#sidebar .collapse{
-  display: block!important;
-  height: 0px;
-  visibility: hidden;
-  opacity: 0;
-  transition: visibility 0s, opacity 0.3s linear;
-}
-#sidebar .collapse.in{
-  height: auto;
-  visibility: visible;
-  opacity: 1
-}
-.sidebar-collapsed #sidebar .collapse.in{
-  display: block!important;
-  visibility: hidden;
-  opacity: 0;
-  transition: visibility 0s, opacity 0.3s linear
 
-}
-.sidebar-collapsed #sidebar li:hover .collapse,.sidebar-collapsed #sidebar li:hover .collapse.in{
-  height: auto;
-  visibility: visible;
-  opacity: 1
-}
+
 </style>
-

@@ -19,17 +19,17 @@ Vue.config.productionTip = false
 
 Vue.prototype.axios = axios;
 Vue.use(api)
-Vue.use(ElementUI)
+Vue.use(ElementUI, { size: 'small' })
 
 //Element UI, 兼容 vue-i18n 6.x ，方案
-Vue.locale = function() {}
+// Vue.locale = function() {}
 
 
 new Vue({
     el: '#app',
+    i18n,
     store,
     axios,
     router,
-    i18n,
     render: h => h(App)
 })

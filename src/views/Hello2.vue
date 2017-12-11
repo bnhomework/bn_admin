@@ -30,27 +30,27 @@
         <el-row>
             <el-table :data="tableInGrid" border style="width: 100%" v-on:expand="">
                 <el-table-column label="DataName" width="280">
-                    <template scope="scope">
+                    <template slot-scope="scope">
                         <span style="margin-left: 10px">{{ scope.row.dataName }}</span>
                     </template>
                 </el-table-column>
                 <el-table-column label="New" width="180">
-                    <template scope="scope">
+                    <template slot-scope="scope">
                         {{ scope.row.New }}
                     </template>
                 </el-table-column>
                 <el-table-column label="Processing" width="180">
-                    <template scope="scope">
+                    <template slot-scope="scope">
                         {{ scope.row.Processing }}
                     </template>
                 </el-table-column>
                 <el-table-column label="Inqueue" width="180">
-                    <template scope="scope">
+                    <template slot-scope="scope">
                         {{ scope.row.Inqueue }}
                     </template>
                 </el-table-column>
                 <el-table-column label="Exception">
-                    <template scope="scope">
+                    <template slot-scope="scope">
                         <el-button type="text" v-on:click="goToException(scope.row.dataName)">
                             {{ scope.row.Exception }}</el-button>
                     </template>
