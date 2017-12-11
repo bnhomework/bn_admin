@@ -1,13 +1,10 @@
 <template>
-  <form id="topbar-search" v-on:submit.prevent="onSubmit" class="hidden-xs" :class="{open:open}">
-    <div class="input-group">
-      <input type="text" v-model="content" placeholder="Search..." class="form-control">
-      <span class="input-group-btn">
-                  <a href="javascript:;" class="btn submit" @click="open=!open">
-                  <i class="fa fa-search"></i>
-                  </a>
-                </span>
-    </div>
+  <form id="topbar-search" v-on:submit.prevent="onSubmit" class="hidden-xs" style="display: inline-block;margin-right: 20px">
+     <el-input
+    placeholder="请输入内容"
+    prefix-icon="el-icon-search"
+    v-model="content">
+  </el-input>
   </form>
 </template>
 <script>
@@ -16,7 +13,6 @@ export default {
   data() {
     return {
       content: '',
-      open: false,
     }
   },
   methods: {

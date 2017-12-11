@@ -5,6 +5,7 @@
         <img :src="require('@/assets/img/company.gif')" style="height:44px">
       </div>
       <div style="text-align: right;position: relative;right:10px;float:right">
+        <quickSearch></quickSearch>
       <languageSelect></languageSelect>
       <el-dropdown>
         <i class="el-icon-setting" style="margin-right: 15px"></i>
@@ -18,10 +19,8 @@
         
       </div>
     </el-header>
-    <el-container style="height: 800px; border: 1px solid #eee">
-      <el-aside width="250px" style="background-color: rgb(238, 241, 246)">
+    <el-container style=" border: 1px solid #eee;margin-bottom: 20px">
         <sidemenu :menu="menu1"></sidemenu>
-      </el-aside>
       <el-container>
         <!-- <el-header style="text-align: right; font-size:12px;" height="44px">
           <el-breadcrumb separator-class="el-icon-arrow-right"style="padding: 10px">
@@ -38,7 +37,7 @@
         </el-main>
       </el-container>
     </el-container>
-    <el-footer>
+    <el-footer style="position: fixed;bottom: 0px;width:100%;height:auto; z-index: 1500;">
       <div class="copyright">2017 © Genewiz - GA Lab UI</div>
     </el-footer>
   </div>
