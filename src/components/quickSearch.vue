@@ -1,8 +1,8 @@
 <template>
   <form id="topbar-search" v-on:submit.prevent="onSubmit" class="hidden-xs" style="display: inline-block;margin-right: 20px">
      <el-input
-    placeholder="请输入内容"
-    prefix-icon="el-icon-search"
+    :placeholder="$t('search')"
+    prefix-icon="el-icon-search" clearable
     v-model="content">
   </el-input>
   </form>

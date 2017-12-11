@@ -83,6 +83,7 @@ export default {
 body {
   margin: 0px;
   background-color: #edf2f5;
+  font-size: 12px;
 }
 
 

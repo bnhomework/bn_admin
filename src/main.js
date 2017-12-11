@@ -24,6 +24,10 @@ Vue.use(ElementUI, { size: 'small' })
 //Element UI, 兼容 vue-i18n 6.x ，方案
 // Vue.locale = function() {}
 
+Vue.config.errorHandler = function (err, vm, info) {
+  // handle error
+  //todo
+}
 
 new Vue({
     el: '#app',
