@@ -1,7 +1,11 @@
 <template>
   <div id="app">
-      <el-header style="text-align: right; font-size: 12px;line-height: 44px;height:44px;background-color:#fff">
-        <languageSelect></languageSelect> 
+    <el-header style="font-size: 12px;line-height: 44px;height:44px;background-color:#fff">
+      <div style="float:left;height:44px">
+        <img :src="require('@/assets/img/company.gif')" style="height:44px">
+      </div>
+      <div style="text-align: right;position: relative;right:10px;float:right">
+      <languageSelect></languageSelect>
       <el-dropdown>
         <i class="el-icon-setting" style="margin-right: 15px"></i>
         <el-dropdown-menu slot="dropdown">
@@ -11,6 +15,8 @@
         </el-dropdown-menu>
       </el-dropdown>
       <span>{{$store.state.LoginName}}</span>
+        
+      </div>
     </el-header>
     <el-container style="height: 800px; border: 1px solid #eee">
       <el-aside width="250px" style="background-color: rgb(238, 241, 246)">
@@ -75,7 +81,6 @@ export default {
 
 </script>
 <style>
-
 body {
   margin: 0px;
   background-color: #edf2f5;
