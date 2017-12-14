@@ -149,6 +149,7 @@ export default {
             else {
                 this.activeTab='SampleRecevie';
             }
+            this.$set(this.loadedTabs, this.activeTab, true);
             this.orderId=this.$route.params.oid;
             this.getProjectHeaderById(this.orderId);
             this.$store.dispatch('project/progressChange',this.orderId)

@@ -1,0 +1,73 @@
+
+
+body {
+  margin: 0px;
+  background-color: #edf2f5;
+  font-size: 12px;
+}
+
+#header {
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.25);
+  font-size: 12px;
+  line-height: 60px;
+  height: 44px;
+  background-color: #fff;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  z-index: 9999
+}
+
+#header .header-sm {
+  display: none;
+}
+
+#content-warp {
+  margin-top: 60px;
+  margin-left: 250px
+}
+
+.copyright {
+  margin-right: 20px;
+  float: right;
+}
+
+.bn-icon {
+  font-family: 'bn-icon';
+  font-size: 15px;
+  color: #888;
+}
+
+@media screen and (max-width: 900px) {
+  #header .header-sm {
+    display: block;
+  }
+  #header .header-normal {
+    display: none;
+  }
+}
+
+/*selectable directives*/
+.selectable{
+    margin-left: -18px;
+    margin-right: -18px;
+    line-height: 40px;
+    padding: 0 18px
+}
+.selectable.selectable-active{
+    background-color: rgb(201, 229, 245)
+}
+
+.selectable {
+    transition: background-color 0.25s ease;
+}
+
+.el-table .fa{
+  cursor: pointer;
+  margin-left: 4px;
+}
+
+.el-button{
+  border-radius: 0px;
+}

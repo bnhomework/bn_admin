@@ -1,5 +1,6 @@
 <template>
     <div>
+        <div>{{orderId}}</div>
         <div class="actions-warpping">
             <span>
                 <el-button type="primary" icon="document" @click="exportSample">{{$t('Export')}}</el-button>
@@ -18,30 +19,30 @@
             <el-table-column :label="$t('Sample#')" width="180" prop="dataName" :render-header="renderCopyDownHeader">
                 <template slot-scope="scope">
                     <div v-copyable="{dataList:dataInGrid,data:scope.row,property:'dataName'}" >
-                        <pop-edit :v="scope.row.SampleName" @save="(v,ctx)=>ctx.$set(scope.row,'SampleName',v)"></pop-edit>
+                        <pop-edit :v="scope.row.SampleName" @update:v="(v,ctx)=>ctx.$set(scope.row,'SampleName',v)"></pop-edit>
                     </div>
                 </template>
             </el-table-column>
             <el-table-column :label="$t('Sample Name')" width="180" property="SampleName" :render-header="renderCopyDownHeader">
                 <template slot-scope="scope"  >
                     <div v-copyable="{dataList:dataInGrid,data:scope.row,property:'SampleName'}" >
-                    <pop-edit :v="scope.row.SampleName" @save="(v,ctx)=>ctx.$set(scope.row,'SampleName',v)"></pop-edit>
+                    <pop-edit :v="scope.row.SampleName" @update:v="(v,ctx)=>ctx.$set(scope.row,'SampleName',v)"></pop-edit>
                     </div>
                 </template>
             </el-table-column>
             <el-table-column :label="$t('Rec Date')" width="180">
                 <template slot-scope="scope">
-                <pop-edit type="textarea" :v="scope.row.SampleName" @save="(v,ctx)=>ctx.$set(scope.row,'SampleName',v)"></pop-edit>
+                <pop-edit type="textarea" :v="scope.row.SampleName" @update:v="(v,ctx)=>ctx.$set(scope.row,'SampleName',v)"></pop-edit>
                 </template>
             </el-table-column>
             <el-table-column :label="$t('Receiver')" width="180">
                 <template slot-scope="scope">
-                <pop-edit type="date-picker" :v="scope.row.ReceiveDate" @save="(v,ctx)=>ctx.$set(scope.row,'ReceiveDate',v)"></pop-edit>
+                <pop-edit type="date-picker" :v="scope.row.ReceiveDate" @update:v="(v,ctx)=>ctx.$set(scope.row,'ReceiveDate',v)"></pop-edit>
                 </template>
             </el-table-column>
             <el-table-column :label="$t('Status')" width="180">
                 <template slot-scope="scope">
-                    <pop-edit type="dropdown" :v="scope.row.Status" :dpOptions="enumStatus" @save="(v,ctx)=>ctx.$set(scope.row,'Status',v)"></pop-edit>
+                    <pop-edit type="dropdown" :v="scope.row.Status" :dpOptions="enumStatus" @update:v="(v,ctx)=>ctx.$set(scope.row,'Status',v)"></pop-edit>
                 </template>
             </el-table-column>
             <el-table-column :label="$t('Shipping')" width="180">
@@ -77,7 +78,7 @@
         <el-pagination @size-change="function(val){pagesize = val;}" @current-change="function(val){currentPage = val;}" :current-page="currentPage" :page-sizes="[10,50,100, 200]" :page-size="pagesize" layout="total, sizes,->, prev, pager, next, jumper" :total="tableData.length"></el-pagination>
 
         <div>
-            <sample-dialog @save="addSampleSuccess" :visible="sampleDialogVisible" @colseDialog="sampleDialogVisible=false"></sample-dialog>
+            <sample-dialog @update:v="addSampleSuccess" :visible="sampleDialogVisible" @colseDialog="sampleDialogVisible=false"></sample-dialog>
         </div>
     </div>
 </template>
@@ -151,11 +152,12 @@ export default {
                 this.tableData=res.data;
                 this.loading=false;
             })
-        }
+        },
     }
     ,
     watch: {
         orderId() {
+            console.log(this.orderId);
             this.init();
         }
     }

@@ -22,7 +22,7 @@
 					<div v-else></div>
 				</div>
 				<div class="editable-buttons">
-					<el-button type="success" @click="save"><i class="fa fa-check"></i></el-button>
+					<el-button type="primary" @click="save"><i class="fa fa-check"></i></el-button>
 					<el-button type="danger" @click="closePop"><i class="fa fa-close"></i></el-button>
 				</div>
 			</div>
@@ -61,7 +61,7 @@
 		},
 		methods:{
 			save:function(){
-				this.$emit('save',this.temValue,this);
+				this.$emit('update:v',this.temValue,this);
 				this.closePop();
 			},
 			closePop:function(){				

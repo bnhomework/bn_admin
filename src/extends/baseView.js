@@ -12,6 +12,11 @@ export default {
     },
     isAuthorize:function(p){
     	return _.contains(this.$store.state.permissions,p);
+    },
+    syncvalue(obj,feild){
+    	return function(v,ctx){
+    		ctx.$set(obj,feild,v)
+    	}
     }
   }
 };

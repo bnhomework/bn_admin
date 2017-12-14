@@ -1,27 +1,31 @@
 <template>
   <div id="app">
-    <el-header style="font-size: 12px;line-height: 44px;height:44px;background-color:#fff">
-      <div style="float:left;height:44px">
-        <img :src="require('@/assets/img/company.gif')" style="height:44px">
+    <el-header id="header">
+      <div class="header-sm">
+        <img :src="require('@/assets/img/company.gif')" style="height:60px">
       </div>
-      <div style="text-align: right;position: relative;right:10px;float:right">
-        <quickSearch></quickSearch>
-      <languageSelect></languageSelect>
-      <el-dropdown>
-        <i class="el-icon-setting" style="margin-right: 15px"></i>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>查看</el-dropdown-item>
-          <el-dropdown-item>新增</el-dropdown-item>
-          <el-dropdown-item>删除</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
-      <span>{{$store.state.LoginName}}</span>
-        
+      <div class="header-normal">
+        <div style="float:left;height:44px">
+          <img :src="require('@/assets/img/company.gif')" style="height:60px">
+        </div>
+        <div style="text-align: right;position: relative;right:10px;float:right">
+          <quickSearch></quickSearch>
+          <languageSelect></languageSelect>
+          <el-dropdown>
+            <i class="el-icon-setting" style="margin-right: 15px"></i>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item>查看</el-dropdown-item>
+              <el-dropdown-item>新增</el-dropdown-item>
+              <el-dropdown-item>删除</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+          <span>{{$store.state.LoginName}}</span>
+        </div>
       </div>
     </el-header>
     <el-container style=" border: 1px solid #eee;margin-bottom: 20px">
-        <sidemenu :menu="menu1"></sidemenu>
-      <el-container>
+      <sidemenu :menu="menu1"></sidemenu>
+      <el-container id="content-warp">
         <!-- <el-header style="text-align: right; font-size:12px;" height="44px">
           <el-breadcrumb separator-class="el-icon-arrow-right"style="padding: 10px">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
@@ -80,24 +84,9 @@ export default {
 
 </script>
 <style>
-body {
-  margin: 0px;
-  background-color: #edf2f5;
-  font-size: 12px;
-}
 
-
-.copyright {
-  margin-right: 20px;
-  float: right;
-}
-
-.bn-icon {
-  font-family: 'bn-icon';
-  font-size: 15px;
-  color: #888;
-}
-
+@import './assets/css/font-awesome/css/font-awesome.min.css';
+@import './assets/css/style.css';
 @font-face {
   font-family: 'bn-icon';
   /* project id 414949 */
