@@ -2,8 +2,10 @@
 
 body {
   margin: 0px;
-  background-color: #edf2f5;
+  background-color: #f0f2f5;
+  color: #777777;
   font-size: 12px;
+  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
 }
 
 #header {
@@ -25,8 +27,17 @@ body {
 
 #content-warp {
   margin-top: 60px;
+}
+#bn-body #content-warp{
   margin-left: 250px
 }
+#bn-body.full #bn-side-menu{
+  display: none;
+}
+#bn-body.full #content-warp{
+  margin-left: 10px
+}
+
 
 .copyright {
   margin-right: 20px;

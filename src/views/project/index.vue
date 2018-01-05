@@ -53,7 +53,6 @@
 
 					<div v-if="loadedTabs.SampleRecevie">
 						<sample :orderId="orderId"></sample>
-						<!-- <sample></sample> -->
 					</div>
 				</el-tab-pane>
 				<el-tab-pane name="QC">
@@ -134,8 +133,7 @@ export default {
             projectHeader: {},
             loadedTabs: {}
         }
-    }
-    ,
+    },
     created () {
         this.init()
     }
@@ -152,7 +150,7 @@ export default {
             this.$set(this.loadedTabs, this.activeTab, true);
             this.orderId=this.$route.params.oid;
             this.getProjectHeaderById(this.orderId);
-            this.$store.dispatch('project/progressChange',this.orderId)
+            this.$store.dispatch('project/progressChange',this.orderId);
         }
         ,
         getProjectHeaderById: function(id) {

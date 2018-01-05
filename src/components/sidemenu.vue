@@ -2,7 +2,7 @@
   <el-aside id="bn-side-menu">
     <div style="border-right: solid 1px #e6e6e6">
     </div>
-    <el-menu default-active="Projects" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" :router="true">
+    <el-menu default-active="Projects" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" background-color="#33485c" text-color="#ffffff" active-text-color="#ffffff" :router="true">
       <template v-for="(m,i) in menu">
         <template v-if="m.items">
           <el-submenu :index="m.title">
@@ -56,5 +56,10 @@ export default {
 .el-menu-vertical-demo {
   height: 100%
 }
-
+#bn-side-menu .el-submenu__title i{
+  color: inherit;
+}
+#bn-side-menu .el-menu-item.is-active{
+  background-color: #e74c3c !important
+}
 </style>

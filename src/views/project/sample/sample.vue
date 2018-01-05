@@ -157,13 +157,12 @@ export default {
     ,
     watch: {
         orderId() {
-            console.log(this.orderId);
+            console.log('xxx'+this.orderId);
             this.init();
         }
     }
     ,
     computed: {
-
         dataInGrid: function() {
             var total=this.tableData.length;
             var skip=this.pagesize * (this.currentPage - 1) || 0;
