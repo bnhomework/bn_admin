@@ -90,11 +90,11 @@ export default {
 @import './assets/css/style.css';
 @font-face {
   font-family: 'bn-icon';  /* project id 349990 */
-  src: url('//at.alicdn.com/t/font_349990_cnbpv8jkdkt3ayvi.eot');
-  src: url('//at.alicdn.com/t/font_349990_cnbpv8jkdkt3ayvi.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_349990_cnbpv8jkdkt3ayvi.woff') format('woff'),
-  url('//at.alicdn.com/t/font_349990_cnbpv8jkdkt3ayvi.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_349990_cnbpv8jkdkt3ayvi.svg#bn-icon') format('svg');
+  src: url('//at.alicdn.com/t/font_349990_sofd35mjw2ricnmi.eot');
+  src: url('//at.alicdn.com/t/font_349990_sofd35mjw2ricnmi.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_349990_sofd35mjw2ricnmi.woff') format('woff'),
+  url('//at.alicdn.com/t/font_349990_sofd35mjw2ricnmi.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_349990_sofd35mjw2ricnmi.svg#bn-icon') format('svg');
 }
 
 </style>

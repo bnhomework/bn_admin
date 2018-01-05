@@ -7,8 +7,7 @@
         <template v-if="m.items">
           <el-submenu :index="m.title">
             <template slot="title">
-              <!-- <i class="el-icon-location"></i> -->
-              <i :v-if="m.icon" class="el-icon" :class="m.icon"><div class="icon-bg bg-pink"></div></i>
+              <span :v-if="m.icon" class="bn-icon" v-html="m.icon"></span>
               <span>{{m.title}}</span>
             </template>
             <template v-for="s in m.items">
@@ -18,8 +17,7 @@
         </template>
         <template v-else>
           <el-menu-item :index="m.url">
-            <!-- <i class="el-icon-menu"></i> -->
-            <i v-if="m.icon" class="el-icon" :class="m.icon"><div class="icon-bg bg-orange"></div></i>
+            <span :v-if="m.icon" class="bn-icon" v-html="m.icon"></span>
             <span slot="title">{{m.title}}</span>
           </el-menu-item>
         </template>
@@ -61,5 +59,10 @@ export default {
 }
 #bn-side-menu .el-menu-item.is-active{
   background-color: #e74c3c !important
+}
+#bn-side-menu .bn-icon{
+  color: inherit;
+  font-size: 20px;
+  padding-right: 10px;
 }
 </style>
