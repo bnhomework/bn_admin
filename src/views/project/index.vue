@@ -12,19 +12,19 @@
 				<el-col :span="6">
 					<div>
 						<span class="title">{{$t('Status')}} :</span>
-						<span>{{projectHeader.Status}}</span>
+						<span>{{$_bn_getEnumItem('OrderStatus',projectHeader.Status)}}</span>
 					</div>
 				</el-col>
 				<el-col :span="6">
 					<div>
 						<span class="title">{{$t('Service Type')}} :</span>
-						<span>{{projectHeader.ServiceType}}</span>
+						<span>{{$_bn_getEnumItem('ServiceType',projectHeader.ServiceItemType)}}</span>
 					</div>
 				</el-col>
 				<el-col :span="6">
 					<div>
 						<span class="title">{{$t('Confirmed Date')}} :</span>
-						<span>{{projectHeader.ConfirmedDate}}</span>
+						<span>{{projectHeader.ConfirmedDate|dtfmt}}</span>
 					</div>
 				</el-col>
 				<el-col :span="6">
@@ -62,7 +62,7 @@
 						)
 					</span>
 					<div v-if="loadedTabs.QC">
-						<qc ref="qc"></qc>
+						<qc ref="qc" :orderId="orderId"></qc>
 					</div>
 				</el-tab-pane>
 				<el-tab-pane name="SampleLibrary">
@@ -72,7 +72,7 @@
 						)
 					</span>
 					<div v-if="loadedTabs.SampleLibrary">
-						<sample-library></sample-library>
+						<sample-library :orderId="orderId"></sample-library>
 					</div>
 				</el-tab-pane>
 				<el-tab-pane name="SampleSequencing">
@@ -82,7 +82,7 @@
 						)
 					</span>					
 					<div v-if="loadedTabs.SampleSequencing">
-						<sample-sequencing></sample-sequencing>
+						<sample-sequencing :orderId="orderId"></sample-sequencing>
 					</div>
 				</el-tab-pane>
 				<el-tab-pane  name="BIQC">
@@ -92,7 +92,7 @@
 						)
 					</span>				
 					<div v-if="loadedTabs.BIQC">
-						<bi-qc></bi-qc>
+						<bi-qc :orderId="orderId"></bi-qc>
 					</div>
 				</el-tab-pane>
 				<el-tab-pane name="BIAnalysis">
@@ -102,7 +102,7 @@
 						)
 					</span>							
 					<div v-if="loadedTabs.BIAnalysis">
-						<bi-analysis></bi-analysis>
+						<bi-analysis :orderId="orderId"></bi-analysis>
 					</div>
 				</el-tab-pane>
 				<el-tab-pane name="Deliver">
@@ -112,7 +112,7 @@
 						)
 					</span>												
 					<div v-if="loadedTabs.Deliver">
-						<deliver></deliver>
+						<deliver :orderId="orderId"></deliver>
 					</div>
 				</el-tab-pane>
 
@@ -135,14 +135,18 @@ export default {
         }
     },
     created () {
-        this.init()
+    	this.$_bn_loadEnums(['OrderStatus','ServiceType'],
+        this.init());
     }
     ,
     methods: {
         init: function() {
-        	this.loadedTabs={};
+        	// this.loadedTabs={};
             if(this.$route.params.tab) {
                 this.activeTab=this.$route.params.tab;
+            }
+            else if(this.activeTab!=''){
+            	
             }
             else {
                 this.activeTab='SampleRecevie';
@@ -155,7 +159,11 @@ export default {
         ,
         getProjectHeaderById: function(id) {
         	this.$api.project.GetProjectHeaderInfo(id).then((res)=> {
-                this.projectHeader=res.data;
+        		if(res.data.code==1){
+                	this.projectHeader=res.data.data;
+        		}else{
+        			this.$message('Failed to load order info.['+res.data.msg+']');
+        		}
             }
             );
         }

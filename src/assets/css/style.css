@@ -82,3 +82,6 @@ body {
 .el-button{
   border-radius: 0px;
 }
+.el-message{
+  z-index: 999999 !important;
+}

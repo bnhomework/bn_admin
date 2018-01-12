@@ -56,7 +56,7 @@ export default {
   name: 'app',
   data() {
     return {
-      sideBarCollapse: true,
+      sideBarCollapse: false,
       transitionName: 'slide-left',
       menu1: []
     }

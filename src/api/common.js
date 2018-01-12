@@ -5,6 +5,9 @@ const GetLangByComponentName=function(name){
 const GetCurrentIdentity=function(name){
 	return axios.post( 'Common/GetCurrentIdentity');
 }
+const GetEnumItems=function(enumTypes){
+	return axios.post( 'Common/GetEnumItems',enumTypes);
+}
 const BuildMenu=function(name){
 	return axios.post( 'Common/BuildMenu');
 }
@@ -12,5 +15,6 @@ const BuildMenu=function(name){
 export default{
 	GetLangByComponentName,
 	GetCurrentIdentity,
+	GetEnumItems,
 	BuildMenu
 }

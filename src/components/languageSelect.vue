@@ -1,5 +1,5 @@
 <template>
-  <el-dropdown @command="handleCommand">
+  <el-dropdown @command="handleCommand" style="width:60px;text-align: center">
     <i class="el-icon-globe" style="margin-right: 15px;cursor: pointer">{{selectedLang.displayName}}</i>
     <el-dropdown-menu slot="dropdown">
       <template v-for="(l,i) in languages">

@@ -20,6 +20,7 @@ const store=new Vuex.Store({
         LoginName: '',
         TimezoneOffset:timezoneOffset,
         Permissions: [],
+        Enums:{},
     },
     mutations: {
         authSuccess(state, preload) {

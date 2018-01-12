@@ -2,7 +2,7 @@
 import axios from '@/extends/http'
 
 const GetOrderIdByTrackingNumber=function(id){
-	return axios.get( 'Project/GetOrderIdByTrackingNumber',{params:{content:id}});
+	return axios.get( 'Project/GetOrderIdByTrackingNumber',{params:{query:id}});
 }
 const GetProjectHeaderInfo=function(id){
 	return axios.get( 'Project/GetProjectHeaderInfo',{params:{orderId:id}});
