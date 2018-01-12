@@ -2,13 +2,14 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import {api} from '@/api'
 import project from './modules/project'
+import tagsView from './modules/tagsView'
 import * as logger from '@/extends/logger'
 
 
 Vue.use(Vuex)
 // const apiModules = api.apiModules
 
-const modules={project}
+const modules={project,tagsView}
 
 var d = new Date();
 var timezoneOffset=0-d.getTimezoneOffset()/60;

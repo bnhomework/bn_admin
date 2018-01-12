@@ -23,6 +23,7 @@
           <span >{{$store.state.LoginName}}</span>
         </div>
       </div>
+      <!-- <tags-view></tags-view> -->
     </el-header>
     <el-container style=" border: 1px solid #eee;margin-bottom: 20px" id="bn-body" :class="{full:sideBarCollapse}">
       <sidemenu :menu="menu1"></sidemenu>
@@ -52,6 +53,7 @@ import sidemenu from '@/components/sidemenu.vue'
 import languageSelect from '@/components/languageSelect.vue'
 import quickSearch from '@/components/quickSearch.vue'
 import 'element-ui/lib/theme-chalk/index.css'
+import  TagsView  from '@/components/TagsView.vue'
 export default {
   name: 'app',
   data() {
@@ -80,7 +82,7 @@ export default {
       return this.$route.meta.name || this.$route.name
     }
   },
-  components: { sidemenu: sidemenu, languageSelect: languageSelect, quickSearch: quickSearch }
+  components: { sidemenu: sidemenu, languageSelect: languageSelect, quickSearch: quickSearch ,TagsView:TagsView}
 }
 
 </script>
