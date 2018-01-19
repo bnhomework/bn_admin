@@ -28,14 +28,38 @@ body {
 #content-warp {
   margin-top: 60px;
 }
-#bn-body #content-warp{
-  margin-left: 250px
+#bn-side-menu{
+  overflow-x: hidden;
+  z-index: 999;
+}
+#bn-side-menu .el-submenu .el-menu-item{
+  height: 40px;
+  line-height:  40px;
+  padding:  0 35px;
 }
 #bn-body.full #bn-side-menu{
-  display: none;
+  width: 55px!important;
+  transition: width 0.28s;
+}
+#bn-body.full #bn-side-menu li.el-submenu ul{
+  display: none!important;
+}
+#bn-body.full #bn-side-menu i.el-submenu__icon-arrow{
+  display: none!important;
+}
+#bn-body.full #bn-side-menu li.el-submenu:hover ul{
+  display: block!important;
+  position: fixed!important;
+  margin-left: 55px!important;
+  margin-top: -55px!important;
+}
+#bn-body #content-warp{
+  margin-left: 250px;
+  transition: margin-left 0.28s;
 }
 #bn-body.full #content-warp{
-  margin-left: 10px
+  margin-left: 65px;
+  transition: margin-left 0.28s;
 }
 
 

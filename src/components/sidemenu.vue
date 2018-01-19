@@ -46,6 +46,7 @@ export default {
 <style>
 #bn-side-menu {
   width: 250px !important;
+  transition: width 0.28s;
   position: fixed;
   top:60px;
   bottom: 0px;
@@ -65,4 +66,7 @@ export default {
   font-size: 20px;
   padding-right: 10px;
 }
+
+
+
 </style>
