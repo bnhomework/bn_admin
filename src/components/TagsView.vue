@@ -52,7 +52,7 @@ export default {
   methods: {
     // generateTitle, // generateTitle by vue-i18n
     generateRoute() {
-      if (this.$route.name) {
+      if (this.$route.meta.name) {
         return this.$route
       }
       return false
@@ -119,7 +119,7 @@ export default {
 }
 .tags-view-wrapper {
     background: #fff;
-    height: 34px;
+    height: 31px;/*34px;*/
     border-bottom: 1px solid #d8dce5;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
     
@@ -136,6 +136,7 @@ export default {
       font-size: 12px;
       margin-left: 5px;
       margin-top: 4px;
+      text-decoration: none;
       
     }
     .tags-view-wrapper .tags-view-item:first-of-type {
@@ -147,7 +148,7 @@ export default {
         border-color: #42b983;
         
       }
-      .tags-view-wrapper .tags-view-item.active::before {
+     /* .tags-view-wrapper .tags-view-item.active::before {
           content: '';
           background: #fff;
           display: inline-block;
@@ -156,7 +157,7 @@ export default {
           border-radius: 50%;
           position: relative;
           margin-right: 2px;
-        }
+        }*/
   .contextmenu {
     margin: 0;
     background: #fff;

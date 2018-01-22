@@ -22,12 +22,12 @@ const test4 = (resolve) => { require(['@/views/test4.vue'], resolve) }
 const test2 = (resolve) => { require(['@/views/test2.vue'], resolve) }
 const test3 = (resolve) => { require(['@/views/test3.vue'], resolve) }
 
-var routes = [{path: '/', name: 'Home', component: Home},
-{path: '/h1', name: 'Hello', component: Hello},
-    {path: '/h2', name: 'Hello2', component: Hello2},
-    {path: '/project_management', name: 'project_management', component: SearchProject},
-    {path: '/project/:oid', name: 'view_project', component: ViewProject},
-    {path: '/401', name: '401', component: UnAuthen,meta: { allowAnonymous: true}},
+var routes = [{path: '/', name: 'Home', component: Home,meta: { name:'Home',allowAnonymous: true}},
+{path: '/h1', name: 'Hello', component: Hello,meta: { name:'Home',allowAnonymous: true}},
+    {path: '/h2', name: 'Hello2', component: Hello2,meta: { name:'Home',allowAnonymous: true}},
+    {path: '/project_management', name: 'project_management', component: SearchProject,meta: { name:'project_management'}},
+    {path: '/project/:oid', name: 'view_project', component: ViewProject,meta: { name:'view_project'}},
+    {path: '/401', name: '401', component: UnAuthen,meta: {name:'Not Found', allowAnonymous: true}},
     {path: '/test', name: 'project_and_sample', component: test,meta: { name:'PROJECT & SAMPLE MANAGEMENT',allowAnonymous: true}},
     {path: '/test_5_2', name: 'scan_project', component: scan_project,meta: { name:'PROJECT SCAN& ASSGIN REACTIONS',allowAnonymous: true}},
     {path: '/test_5_3', name: 'Create_OpeationSheet', component: Create_OpeationSheet,meta: { name:'OPERATION SHEET',allowAnonymous: true}},

@@ -27,7 +27,6 @@
             <span>{{$store.state.LoginName}}</span>
           </div>
         </div>
-        <!-- <tags-view></tags-view> -->
       </el-header>
       <el-container style=" border: 1px solid #eee;margin-bottom: 20px" id="bn-body" :class="{full:sideBarCollapse}">
         <sidemenu :menu="menu1"></sidemenu>
@@ -41,6 +40,8 @@
           </el-breadcrumb>
         </el-header> -->
           <el-main style="">
+
+            <tags-view></tags-view>
             <transition :name="transitionName">
               <router-view></router-view>
             </transition>
@@ -62,7 +63,7 @@ export default {
   name: 'app',
   data() {
     return {
-      sideBarCollapse: false,
+      sideBarCollapse: true,
       transitionName: 'slide-left',
       menu1: []
     }
@@ -116,5 +117,7 @@ export default {
 .hamburger.is-active {
   transform: rotate(0deg);
 }
-
+#bn-body .el-main{
+  padding: 0px;
+}
 </style>
