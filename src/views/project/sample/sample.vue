@@ -40,169 +40,156 @@
       </el-table-column>
       <el-table-column :label="$t('Received Time')" width="250">
         <template slot-scope="scope">
-          <template v-if="scope.row.edit">
-          <el-date-picker v-model="scope.row.ReceivedTime" type="date"></el-date-picker>
-        </template>
-         <span v-else>{{scope.row.ReceivedTime}}</span>
+          <span>{{scope.row.ReceivedTime}}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('Receiving Operator')" width="180">
         <template slot-scope="scope">
           <template v-if="scope.row.edit">
-            <el-select v-model="scope.row.ReceivedBy">
+            <el-select clearable v-model="scope.row.ReceivedBy">
               <el-option v-for="item in $store.state.Enums.ReceivingOperator" :key="item.ItemValue" :label="$t(item.ItemName)" :value="item.ItemValue" :disabled="!item.IsActive">
               </el-option>
             </el-select>
           </template>
-          <span v-else>{{scope.row.ReceivedBy}}</span>
+          <span v-else>{{$bn_enum('ReceivingOperator',scope.row.ReceivedBy)}}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('Shipping Condition')" width="180">
         <template slot-scope="scope">
           <template v-if="scope.row.edit">
-          <el-select v-model="scope.row.Shipping">
-            <el-option v-for="item in $store.state.Enums.ShippingCondition" :key="item.ItemValue" :label="$t(item.ItemName)" :value="item.ItemValue" :disabled="!item.IsActive">
-            </el-option>
-          </el-select>
+            <el-select clearable v-model="scope.row.Shipping">
+              <el-option v-for="item in $store.state.Enums.ShippingCondition" :key="item.ItemValue" :label="$t(item.ItemName)" :value="item.ItemValue" :disabled="!item.IsActive">
+              </el-option>
+            </el-select>
           </template>
-          <span v-else>{{scope.row.Shipping}}</span>
-
+          <span v-else>{{$bn_enum('ShippingCondition',scope.row.Shipping)}}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('Container Condition')" width="180">
         <template slot-scope="scope">
           <template v-if="scope.row.edit">
-          <el-select v-model="scope.row.Container">
-            <el-option v-for="item in $store.state.Enums.ContainerCondition" :key="item.ItemValue" :label="$t(item.ItemName)" :value="item.ItemValue" :disabled="!item.IsActive">
-            </el-option>
-          </el-select>
-        </template>
-          <span v-else>{{scope.row.Container}}</span>
+            <el-select clearable v-model="scope.row.Container">
+              <el-option v-for="item in $store.state.Enums.ContainerCondition" :key="item.ItemValue" :label="$t(item.ItemName)" :value="item.ItemValue" :disabled="!item.IsActive">
+              </el-option>
+            </el-select>
+          </template>
+          <span v-else>{{$bn_enum('ContainerCondition',scope.row.Container)}}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('Freezer')" width="180">
         <template slot-scope="scope">
           <template v-if="scope.row.edit">
-          <el-select v-model="scope.row.Freezer">
-            <el-option v-for="item in $store.state.Enums.Freezer" :key="item.ItemValue" :label="$t(item.ItemName)" :value="item.ItemValue" :disabled="!item.IsActive">
-            </el-option>
-          </el-select>
-        </template>
-          <span v-else>{{scope.row.Freezer}}</span>
+            <el-select clearable v-model="scope.row.Freezer">
+              <el-option v-for="item in $store.state.Enums.Freezer" :key="item.ItemValue" :label="$t(item.ItemName)" :value="item.ItemValue" :disabled="!item.IsActive">
+              </el-option>
+            </el-select>
+          </template>
+          <span v-else>{{$bn_enum('Freezer',scope.row.Freezer)}}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('Sample Type')" width="180">
         <template slot-scope="scope">
           <template v-if="scope.row.edit">
-          <el-select v-model="scope.row.SampleType">
-            <el-option v-for="item in $store.state.Enums.SampleType" :key="item.ItemValue" :label="$t(item.ItemName)" :value="item.ItemValue" :disabled="!item.IsActive">
-            </el-option>
-          </el-select>
+            <el-select clearable v-model="scope.row.SampleType">
+              <el-option v-for="item in $store.state.Enums.SampleType" :key="item.ItemValue" :label="$t(item.ItemName)" :value="item.ItemValue" :disabled="!item.IsActive">
+              </el-option>
+            </el-select>
+          </template>
+          <span v-else>{{$bn_enum('SampleType',scope.row.SampleType)}}</span>
         </template>
-        <span v-else>{{scope.row.SampleType}}</span>
-      </template>
       </el-table-column>
       <el-table-column :label="$t('Species')" width="180">
         <template slot-scope="scope">
           <template v-if="scope.row.edit">
-          <el-input class="edit-input" size="small" v-model="scope.row.Species"></el-input>
-        </template>
-
-        <span v-else>{{scope.row.Species}}</span>
+            <el-input class="edit-input" size="small" v-model="scope.row.Species"></el-input>
+          </template>
+          <span v-else>{{scope.row.Species}}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('Con.')" width="100">
         <template slot-scope="scope">
           <template v-if="scope.row.edit">
-          <el-input class="edit-input" size="small" v-model="scope.row.Con"></el-input>
-        </template>
-
-        <span v-else>{{scope.row.Con}}</span>
+            <el-input class="edit-input" size="small" v-model="scope.row.Con"></el-input>
+          </template>
+          <span v-else>{{scope.row.Con}}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('Nucleic Acid Storage Method')" width="180">
         <template slot-scope="scope">
           <template v-if="scope.row.edit">
-            <el-select v-model="scope.row.NucleicAcidStorageMethod">
+            <el-select clearable v-model="scope.row.NucleicAcidStorageMethod">
               <el-option v-for="item in $store.state.Enums.NucleicAcidStorageMethod" :key="item.ItemValue" :label="$t(item.ItemName)" :value="item.ItemValue" :disabled="!item.IsActive">
               </el-option>
             </el-select>
           </template>
-          <span v-else>{{scope.row.NucleicAcidStorageMethod}}</span>
+          <span v-else>{{$bn_enum('NucleicAcidStorageMethod',scope.row.NucleicAcidStorageMethod)}}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('Volumn')" width="100">
         <template slot-scope="scope">
-
           <template v-if="scope.row.edit">
-          <el-input class="edit-input" size="small" v-model="scope.row.Volumn"></el-input>
-        </template> 
+            <el-input class="edit-input" size="small" v-model="scope.row.Volumn"></el-input>
+          </template>
           <span v-else>{{scope.row.Volumn}}</span>
-
         </template>
       </el-table-column>
       <el-table-column :label="$t('Project Type')" width="180">
         <template slot-scope="scope">
           <template v-if="scope.row.edit">
-          <el-select v-model="scope.row.ProjectType">
-            <el-option v-for="item in $store.state.Enums.ProjectType" :key="item.ItemValue" :label="$t(item.ItemName)" :value="item.ItemValue" :disabled="!item.IsActive">
-            </el-option>
-          </el-select>
-        </template>
-        <span v-else>{{scope.row.ProjectType}}</span>
+            <el-select clearable v-model="scope.row.ProjectType">
+              <el-option v-for="item in $store.state.Enums.ProjectType" :key="item.ItemValue" :label="$t(item.ItemName)" :value="item.ItemValue" :disabled="!item.IsActive">
+              </el-option>
+            </el-select>
+          </template>
+          <span v-else>{{$bn_enum('ProjectType',scope.row.ProjectType)}}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('BI Analysis')" width="120">
         <template slot-scope="scope">
           <template v-if="scope.row.edit">
-          <el-select v-model="scope.row.NeedBI">
-            <el-option v-for="item in $store.state.Enums.BooleanList" :key="item.ItemValue" :label="$t(item.ItemName)" :value="item.ItemValue" :disabled="!item.IsActive">
-            </el-option>
-          </el-select>
-        </template>
-         <span v-else>{{scope.row.NeedBI}}</span>
+            <el-select clearable v-model="scope.row.NeedBI">
+              <el-option v-for="item in $store.state.Enums.BooleanList" :key="item.ItemValue" :label="$t(item.ItemName)" :value="item.ItemValue" :disabled="!item.IsActive">
+              </el-option>
+            </el-select>
+          </template>
+          <span v-else>{{$bn_enum('BooleanList',scope.row.NeedBI)}}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('Plate from')" width="180">
         <template slot-scope="scope">
           <template v-if="scope.row.edit">
-          <el-select v-model="scope.row.RunFormat">
-            <el-option v-for="item in $store.state.Enums.Platform" :key="item.ItemValue" :label="$t(item.ItemName)" :value="item.ItemValue" :disabled="!item.IsActive">
-            </el-option>
-          </el-select>
-        </template><span v-else>{{scope.row.RunFormat}}</span>
-      </template>
+            <el-select clearable v-model="scope.row.RunFormat">
+              <el-option v-for="item in $store.state.Enums.Platform" :key="item.ItemValue" :label="$t(item.ItemName)" :value="item.ItemValue" :disabled="!item.IsActive">
+              </el-option>
+            </el-select>
+          </template><span v-else>{{$bn_enum('Platform',scope.row.RunFormat)}}</span>
+        </template>
       </el-table-column>
       <el-table-column :label="$t('Data Volume')" width="100">
         <template slot-scope="scope">
           <template v-if="scope.row.edit">
-          <el-input class="edit-input" size="small" v-model="scope.row.DataVolume"></el-input>
-        </template>
-        <span v-else>{{scope.row.DataVolume}}</span>
+            <el-input class="edit-input" size="small" v-model="scope.row.DataVolume"></el-input>
+          </template>
+          <span v-else>{{scope.row.DataVolume}}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('Comments')" width="280">
         <template slot-scope="scope">
           <template v-if="scope.row.edit">
-          <el-input class="edit-input" size="small" v-model="scope.row.Comments"></el-input>
-        </template>
-        <span v-else>{{scope.row.Comments}}</span>
-
+            <el-input class="edit-input" size="small" v-model="scope.row.Comments"></el-input>
+          </template>
+          <span v-else>{{scope.row.Comments}}</span>
         </template>
       </el-table-column>
-      <el-table-column
-      fixed="right"
-      label="操作"
-      width="100">
-      <template slot-scope="scope">
-
-        <template v-if="scope.row.edit==true" >
-          <el-button @click="enableEdit(scope.row,false)" type="text" size="small">Hide Eidt</el-button>
-        </template>
+      <el-table-column fixed="right" :label="$t('Actions')" width="100">
+        <template slot-scope="scope">
+          <template v-if="scope.row.edit==true">
+            <el-button @click="enableEdit(scope.row,false)" type="text" size="small">Done</el-button>
+          </template>
           <el-button v-else @click="enableEdit(scope.row,true)" type="text" size="small">Eidt</el-button>
-        <!-- <el-button type="text" size="small">编辑</el-button> -->
-      </template>
-    </el-table-column>
+          <!-- <el-button type="text" size="small">编辑</el-button> -->
+        </template>
+      </el-table-column>
     </el-table>
     <el-pagination @size-change="function(val){pagesize = val;}" @current-change="function(val){currentPage = val;}" :current-page="currentPage" :page-sizes="[10,50,100, 200]" :page-size="pagesize" layout="total, sizes,->, prev, pager, next, jumper" :total="tableData.length"></el-pagination>
     <div>
@@ -235,8 +222,8 @@ export default {
     init: function() {
       this.getSamplesByOrderId(this.orderId);
     },
-    enableEdit(r,v){
-      this.$set(r,'edit',v);
+    enableEdit(r, v) {
+      this.$set(r, 'edit', v);
       // r.edit=true;
     },
     updateSampleStatusToReceived: function() {},

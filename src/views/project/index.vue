@@ -12,13 +12,13 @@
 				<el-col :span="6">
 					<div>
 						<span class="title">{{$t('Status')}} :</span>
-						<span>{{$_bn_getEnumItem('OrderStatus',projectHeader.Status)}}</span>
+						<span>{{$bn_enum('OrderStatus',projectHeader.Status)}}</span>
 					</div>
 				</el-col>
 				<el-col :span="6">
 					<div>
 						<span class="title">{{$t('Service Type')}} :</span>
-						<span>{{$_bn_getEnumItem('ServiceType',projectHeader.ServiceItemType)}}</span>
+						<span>{{$bn_enum('ServiceType',projectHeader.ServiceItemType)}}</span>
 					</div>
 				</el-col>
 				<el-col :span="6">
@@ -138,8 +138,7 @@ let project={
         }
     },
     created () {
-    	this.$_bn_loadEnums(['ContainerCondition','Freezer','LibraryPrepStandardProtocol','NucleicAcidStorageMethod','ProjectType','SampleType','ShippingCondition','Platform','ReceivingOperator'],
-        this.init());
+    	this.init();	
     }
     ,
     methods: {
@@ -149,7 +148,10 @@ let project={
     		});
     	},
         init: function() {
-        	// this.loadedTabs={};
+        	this.$bn_loadEnums(['OrderStatus','ServiceType','ContainerCondition','Freezer','LibraryPrepStandardProtocol','NucleicAcidStorageMethod','ProjectType','SampleType','ShippingCondition','Platform','ReceivingOperator'],
+        this.initView);
+        },
+        initView(){
             if(this.$route.params.tab) {
                 this.activeTab=this.$route.params.tab;
             }

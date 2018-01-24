@@ -22,7 +22,7 @@ let baseview = {
         ctx.$set(obj, feild, v)
       }
     },
-    $_bn_loadEnums(enumTypes, cb) {
+    $bn_loadEnums(enumTypes, cb) {
       var self = this;
       var needToLoadTypes = [];
       _.each(enumTypes, (x) => {
@@ -52,7 +52,7 @@ let baseview = {
         }
       }
     },
-    $_bn_getEnumItem(enumType, enumValue) {
+    $bn_enum(enumType, enumValue) {
       var self = this;
       if (self.$store.state.Enums[enumType] != null) {
         var items = _.filter(self.$store.state.Enums[enumType], (x) => { return x.ItemValue == enumValue; });
