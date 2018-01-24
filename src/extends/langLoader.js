@@ -22,7 +22,7 @@ const autoLoader = {
     //this.loadLanguage()
     var name='bn';
     if(!_.contains(window.loadedComponents, name)){
-      if(this.$i18n.mergeLocaleMessage){
+      if(this.$i18n&&this.$i18n.mergeLocaleMessage){
         
       window.loadedComponents.push(name)
       this.$i18n.mergeLocaleMessage('en', bn_en);

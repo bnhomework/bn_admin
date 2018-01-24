@@ -1,16 +1,36 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
+  <div class="errPage-container">
+    <el-row>
+      <el-col :span="12">
+        <h1 class="text-jumbo text-ginormous">Oops!</h1>
+        <h2>你没有权限去该页面</h2>
+        <h6>请联系你领导</h6>
+        <ul class="list-unstyled">
+          <li>或者你可以去:</li>
+          <li class="link-type">
+            <router-link to="/">回首页</router-link>
+          </li>
+        </ul>
+      </el-col>
+      <el-col :span="12">
+        <img :src="errGif" width="313" height="428" alt="Girl has dropped her ice cream.">
+      </el-col>
+    </el-row>
+    <el-dialog title="随便看" :visible.sync="dialogVisible">
+      <img class="pan-img" :src="ewizardClap">
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import errGif from '@/assets/img/401.gif'
 import baseView from '@/extends/baseView';
 export default {  
   mixins: [baseView],
   name: 'bn-notfound',
   data () {
     return {
+      errGif: errGif + '?' + +new Date(),
       msg: '----------------401----------------------'
     }
   }
@@ -19,21 +39,41 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-  font-weight: normal;
-}
+.errPage-container {
+    width: 800px;
+    margin: 100px auto;
+  }
 
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
-}
+.errPage-container .pan-back-btn {
+      background: #008489;
+      color: #fff;
+    }
+.errPage-container .pan-gif {
+      margin: 0 auto;
+      display: block;
+    }
+.errPage-container .pan-img {
+      display: block;
+      margin: 0 auto;
+    }
+.errPage-container .text-jumbo {
+      font-size: 60px;
+      font-weight: 700;
+      color: #484848;
+    }
+.errPage-container .list-unstyled {
+      font-size: 14px;
+      
+    }
+.errPage-container .list-unstyled li {
+        padding-bottom: 5px;
+      }
+.errPage-container .list-unstyled a {
+        color: #008489;
+        text-decoration: none;
+        
+      }
+.errPage-container .list-unstyled a:hover {
+          text-decoration: underline;
+        }
 </style>

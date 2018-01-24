@@ -1,12 +1,15 @@
 import _ from 'underscore'
 import moment from 'moment'
 import * as logger from '@/extends/logger';
-export default {
+import customerTableHeader from '@/extends/el/customerTableHeader';
+
+let baseview = {
   data() {
     return {
       logger: logger
     }
   },
+  // extends: customerTableHeader,
   methods: {
     needLoadLanguage: function() {
       return true;
@@ -31,13 +34,14 @@ export default {
       if (needToLoadTypes.length > 0) {
         self.$api.common.GetEnumItems(needToLoadTypes)
           .then((res) => {
-            _.each(needToLoadTypes, (x) => {
+            for (var i = 0; i < needToLoadTypes.length; i++) {
+              var x = needToLoadTypes[i]
               var tmp = null;
               if (res.data.code == 1 && res.data.data[x] != null) {
                 tmp = res.data.data[x];
               }
               self.$store.state.Enums[x] = tmp;
-            });
+            }
             if (cb) {
               cb();
             }
@@ -51,9 +55,9 @@ export default {
     $_bn_getEnumItem(enumType, enumValue) {
       var self = this;
       if (self.$store.state.Enums[enumType] != null) {
-        var items=_.filter(self.$store.state.Enums[enumType] ,(x)=>{return x.ItemValue==enumValue;});
-        if(items.length>0){
-            return self.$t(items[0].ItemName);
+        var items = _.filter(self.$store.state.Enums[enumType], (x) => { return x.ItemValue == enumValue; });
+        if (items.length > 0) {
+          return self.$t(items[0].ItemName);
         }
       }
       return enumValue;
@@ -72,4 +76,6 @@ export default {
 
     }
   }
-};
+}
+console.log(baseview)
+export default baseview;

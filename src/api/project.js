@@ -13,9 +13,15 @@ const GetProjectProgressStatus=function(id){
 const LoadSampleInfo=function(orderId){
 	return axios.get( 'Project/LoadSampleInfo',{params:{orderId:orderId}});
 }
+
+const LoadOrderToLab=function(orderId){
+	return axios.post( 'Project/LoadOrderToLab?orderId='+orderId);
+}
+
 export default{
 	GetOrderIdByTrackingNumber,	
 	GetProjectHeaderInfo,	
 	GetProjectProgressStatus,
 	LoadSampleInfo,
+	LoadOrderToLab,
 }

@@ -1,7 +1,6 @@
 import baseView from '@/extends/baseView';
-import customerTableHeader from '@/extends/el/customerTableHeader';
 import _ from 'underscore';
-let mixinSubView = {
+export default {
   data() {
     return {
       loading: false,
@@ -12,7 +11,14 @@ let mixinSubView = {
     };
   },
   props: ['orderId'],
+  extends: baseView,
+  created() {
+    console.log('sub view created')
+  },
   methods: {
+    init: function() {
+      console.log('sub view init')
+    },
     handleSelectionChange(val) {
       this.selectedRows = val;
     }
@@ -22,26 +28,13 @@ let mixinSubView = {
       var total = this.tableData.length;
       var skip = this.pagesize * (this.currentPage - 1) || 0;
       var end = skip + this.pagesize;
-      return this.tableData.slice(skip, end);
+      var result= this.tableData.slice(skip, end);
+      return result;
     }
-  }
-};
-export default () => {
-  return {
-    mixins: [mixinSubView, baseView, customerTableHeader],
-
-    created() {
-      console.log('sub view created')
-    },
-    methods: {
-      init: function() {
-        console.log('sub view init')
-      },
-    },
-    watch: {
-      orderId() {
-        this.init();
-      }
+  },
+  watch: {
+    orderId() {
+      this.init();
     }
   }
 }

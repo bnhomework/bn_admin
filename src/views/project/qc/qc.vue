@@ -8,12 +8,13 @@
 <script>
 import subView from '@/views/project/subView';
 import _ from 'underscore';
-export default _.extend(subView(),{
+export default {
   name: 'qc',
+  extends:subView,
   methods:{
   	init(){
   		console.log('init from qc')
   	}
   }
-})
+}
 </script>

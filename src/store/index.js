@@ -21,7 +21,7 @@ const store=new Vuex.Store({
         LoginName: '',
         TimezoneOffset:timezoneOffset,
         Permissions: [],
-        Enums:{},
+        Enums:{BooleanList:[{ItemName:'Yes',ItemValue:true,IsActive:true},{ItemName:'No',ItemValue:false,IsActive:true}]},
     },
     mutations: {
         authSuccess(state, preload) {

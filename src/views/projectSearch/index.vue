@@ -17,7 +17,7 @@
 <script>
 import baseView from '@/extends/baseView';
 export default {
-  mixins: [baseView],
+  extends: baseView,
   data() {
     return {
       searchCondition: {

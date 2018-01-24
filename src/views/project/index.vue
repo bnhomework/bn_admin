@@ -41,6 +41,7 @@
 				</el-col>
 			</el-row>
 			<br/>
+			<el-button type="primary" @click="loadToLab">{{$t('Load to Lab')}}</el-button>
 		</div>
 		<div class="projectDetail">
 			<el-tabs  type="border-card" @tab-click="handleTabClick" :active-name="activeTab">
@@ -121,10 +122,12 @@
 	</div>
 </template>
 <script> 
+import _ from 'underscore'
 import baseView from '@/extends/baseView';
 import { mapGetters, mapActions } from 'vuex'
-export default {
-    mixins: [baseView],
+let project={
+    // mixins: [baseView],
+    extends: baseView,
     name: 'project-list',
     data () {
         return {
@@ -135,11 +138,16 @@ export default {
         }
     },
     created () {
-    	this.$_bn_loadEnums(['OrderStatus','ServiceType'],
+    	this.$_bn_loadEnums(['ContainerCondition','Freezer','LibraryPrepStandardProtocol','NucleicAcidStorageMethod','ProjectType','SampleType','ShippingCondition','Platform','ReceivingOperator'],
         this.init());
     }
     ,
     methods: {
+    	loadToLab(){
+    		this.$api.project.LoadOrderToLab(this.orderId).then((res)=>{
+
+    		});
+    	},
         init: function() {
         	// this.loadedTabs={};
             if(this.$route.params.tab) {
@@ -221,6 +229,7 @@ export default {
     }
 }
 
+export default project;
 </script>
 
 <style scoped>
