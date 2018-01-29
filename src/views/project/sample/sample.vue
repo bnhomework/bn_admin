@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>{{orderId}}</div>
+    <!-- <div>{{orderId}}</div> -->
     <div class="actions-warpping">
       <span>
             <el-button type="primary" icon="document" @click="exportSample">{{$t('Export')}}</el-button>
@@ -12,7 +12,7 @@
         </span>
     </div>
     <!-- <el-date-picker v-model="beginDate" type="date" placeholder="选择日期"></el-date-picker> -->
-    <el-table :data="dataInGrid" border max-height="600" @selection-change="handleSelectionChange" v-loading="loading">
+    <el-table :data="dataInGrid" border max-height="600" @selection-change="handleSelectionChange" v-loading="loading" :row-class-name="tableRowStatus">
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column fixed :label="$t('Sample Name')" width="180">
         <template slot-scope="scope">
@@ -24,7 +24,7 @@
       </el-table-column>
       <el-table-column :label="$t('SNPrefix')" width="100">
         <template slot-scope="scope">
-          <template v-if="scope.row.allowEdit">
+          <template v-if="scope.row.edit">
             <el-input class="edit-input" size="small" v-model="scope.row.SNPrefix"></el-input>
           </template>
           <span v-else>{{scope.row.SNPrefix}}</span>
@@ -38,7 +38,7 @@
           <span v-else>{{scope.row.SerialNumber}}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('Received Time')" width="250">
+      <el-table-column :label="$t('Received Time')" width="120">
         <template slot-scope="scope">
           <span>{{scope.row.ReceivedTime}}</span>
         </template>
@@ -224,7 +224,15 @@ export default {
     },
     enableEdit(r, v) {
       this.$set(r, 'edit', v);
-      // r.edit=true;
+    },
+    tableRowStatus({ row, rowIndex }) {
+      var cls = '';
+      // if(row.ItemStatus=='1000'){
+      //   cls='success-row'
+      // }else if(row.ItemStatus=='1090'){
+      //   cls='discard-row'
+      // }
+      return cls;
     },
     updateSampleStatusToReceived: function() {},
     moveSampleToQC: function() {},
